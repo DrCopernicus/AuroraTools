@@ -17,25 +17,25 @@ public class Settings {
 
 	public boolean[] commercial = new boolean[1];
 
-	public VariableSetting deploymentTime = new VariableSetting();
-	public VariableSetting armorRating = new VariableSetting();
+	public VariableSetting deploymentTime = new VariableSetting(24, 24, 1);
+	public VariableSetting armorRating = new VariableSetting(1, 100, 1);
 	
-	public VariableSetting gravSurveyPoints = new VariableSetting();
-	public VariableSetting geoSurveyPoints = new VariableSetting();
+	public VariableSetting gravSurveyPoints = new VariableSetting(0, 0, 1);
+	public VariableSetting geoSurveyPoints = new VariableSetting(0, 0, 1);
 
-	public VariableSetting numberOfBridges = new VariableSetting();
+	public VariableSetting numberOfBridges = new VariableSetting(1, 1, 1);
 	
-	public VariableSetting numberOfMaintStorage = new VariableSetting();
-	public VariableSetting numberOfEngineerSpaces = new VariableSetting();
+	public VariableSetting numberOfMaintStorage = new VariableSetting(0, 0, 1);
+	public VariableSetting numberOfEngineerSpaces = new VariableSetting(1, 1, 1);
 	
-	public VariableSetting magazineNumber = new VariableSetting();
-	public VariableSetting magazineSize = new VariableSetting();
-	public VariableSetting magazineHTK = new VariableSetting();
+	public VariableSetting magazineNumber = new VariableSetting(0, 0, 1);
+	public VariableSetting magazineSize = new VariableSetting(1, 30, 1);
+	public VariableSetting magazineHTK = new VariableSetting(1, 10, 1);
 	
-	public VariableSetting engineSize = new VariableSetting();
-	public VariableSetting numberOfEngines = new VariableSetting();
-	public VariableSetting fuelReserves = new VariableSetting();
-	public VariableSetting enginePowerMod = new VariableSetting();
+	public VariableSetting engineSize = new VariableSetting(1, 50, 1);
+	public VariableSetting numberOfEngines = new VariableSetting(1, 3, 1);
+	public VariableSetting enginePowerMod = new VariableSetting(0.1, 3.0, 0.05);
+	public VariableSetting fuelReserves = new VariableSetting(500, 5000, 500);
 	
 	public VariableSetting[] listOfSettings = new VariableSetting[]{armorRating, deploymentTime, gravSurveyPoints, geoSurveyPoints, numberOfBridges, numberOfMaintStorage, numberOfEngineerSpaces, magazineNumber, magazineSize, magazineHTK, engineSize, numberOfEngines, fuelReserves, enginePowerMod};
 	

@@ -10,10 +10,6 @@ public class VariableSetting {
 	
 	public int[] values;
 	
-	public VariableSetting() {
-		 this(0.0,0.0,0.0,0.0);
-	}
-	
 	public VariableSetting(double min, double max, double spacing, double current) {
 		this.min = min;
 		this.max = max;
@@ -22,6 +18,14 @@ public class VariableSetting {
 		number = (int)((max - min)/spacing) + 1;
 		count = 0;
 		values = new int[number];
+	}
+	
+	public VariableSetting(double min, double max, double spacing) {
+		this(min, max, spacing, min);
+	}
+
+	public VariableSetting() {
+		 this(0.0, 0.0, 0.0, 0.0);
 	}
 	
 	public void recalculate() {

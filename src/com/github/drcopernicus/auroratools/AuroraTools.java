@@ -78,20 +78,20 @@ public class AuroraTools extends JFrame implements ActionListener {
 				new OneDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techPanel),
 				new OneDoublePanel("Grav sensor rank", settings.techGravSensorRank, techPanel),
 				new OneDoublePanel("Armor strength / HS", settings.techArmorWeight, techPanel),
-				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel, 24, 24, 1),
-				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel, 1, 100, 1),
-				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel, 0, 0, 1),
-				new ThreeDoublePanel("Geo survey points", settings.geoSurveyPoints, specPanel, 0, 0, 1),
-				new ThreeDoublePanel("Number of bridges", settings.numberOfBridges, specPanel, 1, 1, 1),
-				new ThreeDoublePanel("Number of maintenance storage", settings.numberOfMaintStorage, specPanel, 0, 0, 1),
-				new ThreeDoublePanel("Number of engineering spaces", settings.numberOfEngineerSpaces, specPanel, 1, 1, 1),
-				new ThreeDoublePanel("Number of magazines", settings.magazineNumber, specPanel, 0, 0, 1),
-				new ThreeDoublePanel("Magazine size", settings.magazineSize, specPanel, 1, 30, 1),
-				new ThreeDoublePanel("Magazine HTK", settings.magazineHTK, specPanel, 1, 10, 1),
-				new ThreeDoublePanel("Engine HS", settings.engineSize, specPanel, 1, 50, 1),
-				new ThreeDoublePanel("Number of engines", settings.numberOfEngines, specPanel, 1, 3, 1),
-				new ThreeDoublePanel("Engine power mod", settings.enginePowerMod, specPanel, 0.1, 3.0, 0.05),
-				new ThreeDoublePanel("Fuel reserves (kL)", settings.fuelReserves, specPanel, 500, 5000, 500),
+				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel),
+				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel),
+				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel),
+				new ThreeDoublePanel("Geo survey points", settings.geoSurveyPoints, specPanel),
+				new ThreeDoublePanel("Number of bridges", settings.numberOfBridges, specPanel),
+				new ThreeDoublePanel("Number of maintenance storage", settings.numberOfMaintStorage, specPanel),
+				new ThreeDoublePanel("Number of engineering spaces", settings.numberOfEngineerSpaces, specPanel),
+				new ThreeDoublePanel("Number of magazines", settings.magazineNumber, specPanel),
+				new ThreeDoublePanel("Magazine size", settings.magazineSize, specPanel),
+				new ThreeDoublePanel("Magazine HTK", settings.magazineHTK, specPanel),
+				new ThreeDoublePanel("Engine HS", settings.engineSize, specPanel),
+				new ThreeDoublePanel("Number of engines", settings.numberOfEngines, specPanel),
+				new ThreeDoublePanel("Engine power mod", settings.enginePowerMod, specPanel),
+				new ThreeDoublePanel("Fuel reserves (kL)", settings.fuelReserves, specPanel),
 				new CheckBoxPanel("Commercial ships allowed", settings.commercial, reqsPanel),
 				new TwoValuePanel("Velocity (km/s)", settings.velocity, reqsPanel, 0, 9999999),
 				new TwoValuePanel("Distance (billion km)", settings.distance, reqsPanel, 0, 9999999),
@@ -308,16 +308,16 @@ public class AuroraTools extends JFrame implements ActionListener {
 		public VariableSetting set;
 		public JLabel runs = new JLabel("0");
 		
-		public ThreeDoublePanel(String title, VariableSetting set, JPanel panel, double minV, double maxV, double spaV) {
+		public ThreeDoublePanel(String title, VariableSetting set, JPanel panel) {
 			super(title);
 			this.set = set;
 			this.add(label);
 			this.add(min);
-			min.setText(minV+"");
+			min.setText(set.min+"");
 			this.add(max);
-			max.setText(maxV+"");
+			max.setText(set.max+"");
 			this.add(spacing);
-			spacing.setText(spaV+"");
+			spacing.setText(set.spacing+"");
 			runs.setPreferredSize(new Dimension(40,runs.getPreferredSize().height));
 			this.add(runs);
 			panel.add(this);
