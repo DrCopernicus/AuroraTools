@@ -40,7 +40,13 @@ public class Settings {
 	public VariableSetting enginePowerMod = new VariableParameter(0.1, 3.0, 0.05);
 	public VariableSetting fuelReserves = new VariableParameter(500, 5000, 500);
 	
-	public VariableSetting[] listOfSettings = new VariableSetting[]{armorRating, deploymentTime, gravSurveyPoints, geoSurveyPoints, numberOfBridges, numberOfMaintStorage, numberOfEngineerSpaces, magazineNumber, magazineSize, magazineHTK, engineSize, numberOfEngines, fuelReserves, enginePowerMod};
+	public VariableSetting[] listOfSettings = new VariableSetting[]{
+			techFeedEfficiency, techMagazineEjection, techEnginePower, techFuelConsumption,
+			techBaseBuildRate, techGeoSensorRank, techGravSensorRank, techArmorWeight,
+			armorRating, deploymentTime, gravSurveyPoints, geoSurveyPoints,
+			numberOfBridges, numberOfMaintStorage, numberOfEngineerSpaces, magazineNumber,
+			magazineSize, magazineHTK, engineSize, numberOfEngines,
+			fuelReserves, enginePowerMod};
 	
 	//Dependent variables
 	public double[] velocity = new double[2];
