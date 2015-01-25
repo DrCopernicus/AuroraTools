@@ -74,6 +74,7 @@ public class Ship {
 		buildPoints += s.numberOfBridges.current * 10;
 		//sensor
 		while (s.gravSurveyPoints.current > gravSurveyPoints) {
+			//tries to optimize the grav sensors on the ship by filling out the biggest (and therefore most cost effective) sensors first
 			if (s.techGravSensorRank.current >= 4 && s.gravSurveyPoints.current - gravSurveyPoints > 5) {
 				gravSurveyPoints += 5;
 				buildPoints += 300;
@@ -91,6 +92,7 @@ public class Ship {
 			crew += 10;
 		}
 		while (s.geoSurveyPoints.current > geoSurveyPoints) {
+			//tries to optimize the geo sensors on the ship by filling out the biggest (and therefore most cost effective) sensors first
 			if (s.techGeoSensorRank.current >= 4 && s.geoSurveyPoints.current - geoSurveyPoints > 5) {
 				geoSurveyPoints += 5;
 				buildPoints += 300;

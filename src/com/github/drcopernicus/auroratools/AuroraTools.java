@@ -42,6 +42,14 @@ public class AuroraTools extends JFrame implements ActionListener {
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
 		JPanel flavPanel = new JPanel(new GridLayout(0,1));
 		JPanel techPanel = new JPanel(new GridLayout(0,1));
+		JPanel techBioPanel = new JPanel(new GridLayout(0,1));
+		JPanel techConPanel = new JPanel(new GridLayout(0,1));
+		JPanel techDefPanel = new JPanel(new GridLayout(0,1));
+		JPanel techEnePanel = new JPanel(new GridLayout(0,1));
+		JPanel techLogPanel = new JPanel(new GridLayout(0,1));
+		JPanel techMisPanel = new JPanel(new GridLayout(0,1));
+		JPanel techPowPanel = new JPanel(new GridLayout(0,1));
+		JPanel techSenPanel = new JPanel(new GridLayout(0,1));
 		JPanel specPanel = new JPanel(new GridLayout(0,1));
 		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
 		JPanel dispPanel = new JPanel();
@@ -59,6 +67,17 @@ public class AuroraTools extends JFrame implements ActionListener {
 		dispSuperButtons.add(dispButtons);
 		dispPanel.add(dispSuperButtons);
 		dispPanel.add(displayShipField,BorderLayout.CENTER);
+		JTabbedPane tabbedTechPane = new JTabbedPane();
+		//adding individual tech panels to the parent tech panel, for organizational purposes
+		techPanel.add(tabbedTechPane);
+		tabbedTechPane.addTab("Biology / Genetics", techBioPanel);
+		tabbedTechPane.addTab("Construction / Production", techConPanel);
+		tabbedTechPane.addTab("Defensive Systems", techDefPanel);
+		tabbedTechPane.addTab("Energy Weapons", techEnePanel);
+		tabbedTechPane.addTab("Logistics / Ground Combat", techLogPanel);
+		tabbedTechPane.addTab("Missiles / Kinetic Weapons", techMisPanel);
+		tabbedTechPane.addTab("Power and Propulsion", techPowPanel);
+		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Flav", flavPanel);
 		tabbedPane.addTab("Tech", techPanel);
@@ -68,17 +87,18 @@ public class AuroraTools extends JFrame implements ActionListener {
 		
 		megaPanel.add(tabbedPane);
 		settings = new Settings();
+		//components array is used for more easily updating the data on them (tooltips, etc.)
 		components = new SpecialPanel[]{
 				new OneStringPanel("Name", settings.shipName, flavPanel),
 				new OneStringPanel("Class", settings.shipClass, flavPanel),
-				new ThreeDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techPanel),
-				new ThreeDoublePanel("Magazine ejection", settings.techMagazineEjection, techPanel),
-				new ThreeDoublePanel("EP / HS", settings.techEnginePower, techPanel),
-				new ThreeDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techPanel),
-				new ThreeDoublePanel("Fuel consumption", settings.techFuelConsumption, techPanel),
-				new ThreeDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techPanel),
-				new ThreeDoublePanel("Grav sensor rank", settings.techGravSensorRank, techPanel),
-				new ThreeDoublePanel("Armor strength / HS", settings.techArmorWeight, techPanel),
+				new ThreeDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techMisPanel),
+				new ThreeDoublePanel("Magazine ejection", settings.techMagazineEjection, techMisPanel),
+				new ThreeDoublePanel("EP / HS", settings.techEnginePower, techPowPanel),
+				new ThreeDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techConPanel),
+				new ThreeDoublePanel("Fuel consumption", settings.techFuelConsumption, techPowPanel),
+				new ThreeDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techSenPanel),
+				new ThreeDoublePanel("Grav sensor rank", settings.techGravSensorRank, techSenPanel),
+				new ThreeDoublePanel("Armor strength / HS", settings.techArmorWeight, techDefPanel),
 				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel),
 				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel),
 				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel),
@@ -118,7 +138,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 	}
 	
 	public static void main(String[] args) {
-		AuroraTools cui = new AuroraTools();
+		new AuroraTools();
 	}
 
 	public void actionPerformed(ActionEvent a) {
