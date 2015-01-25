@@ -57,7 +57,7 @@ public class Ship {
 		//engine
 		mass += s.engineSize.current * s.numberOfEngines.current;
 		crew += (int)(s.engineSize.current * s.numberOfEngines.current * s.enginePowerMod.current);
-		rawEP = s.techEnginePower[0] * s.engineSize.current * s.numberOfEngines.current * s.enginePowerMod.current;
+		rawEP = s.techEnginePower.current * s.engineSize.current * s.numberOfEngines.current * s.enginePowerMod.current;
 		buildPoints += rawEP / 2; //also depends on the thermal signature reduction of the engine, but this has yet to be implemented
 		commercial = s.enginePowerMod.current <= 0.5 && s.engineSize.current >= 25;
 		//maintenance and engineering spaces
@@ -74,13 +74,13 @@ public class Ship {
 		buildPoints += s.numberOfBridges.current * 10;
 		//sensor
 		while (s.gravSurveyPoints.current > gravSurveyPoints) {
-			if (s.techGravSensorRank[0] >= 4 && s.gravSurveyPoints.current - gravSurveyPoints > 5) {
+			if (s.techGravSensorRank.current >= 4 && s.gravSurveyPoints.current - gravSurveyPoints > 5) {
 				gravSurveyPoints += 5;
 				buildPoints += 300;
-			} else if (s.techGravSensorRank[0] >= 3 && s.gravSurveyPoints.current - gravSurveyPoints > 3) {
+			} else if (s.techGravSensorRank.current >= 3 && s.gravSurveyPoints.current - gravSurveyPoints > 3) {
 				gravSurveyPoints += 3;
 				buildPoints += 200;
-			} else if (s.techGravSensorRank[0] >= 2 && s.gravSurveyPoints.current - gravSurveyPoints > 2) {
+			} else if (s.techGravSensorRank.current >= 2 && s.gravSurveyPoints.current - gravSurveyPoints > 2) {
 				gravSurveyPoints += 2;
 				buildPoints += 150;
 			} else {
@@ -91,13 +91,13 @@ public class Ship {
 			crew += 10;
 		}
 		while (s.geoSurveyPoints.current > geoSurveyPoints) {
-			if (s.techGeoSensorRank[0] >= 4 && s.geoSurveyPoints.current - geoSurveyPoints > 5) {
+			if (s.techGeoSensorRank.current >= 4 && s.geoSurveyPoints.current - geoSurveyPoints > 5) {
 				geoSurveyPoints += 5;
 				buildPoints += 300;
-			} else if (s.techGeoSensorRank[0] >= 3 && s.geoSurveyPoints.current - geoSurveyPoints > 3) {
+			} else if (s.techGeoSensorRank.current >= 3 && s.geoSurveyPoints.current - geoSurveyPoints > 3) {
 				geoSurveyPoints += 3;
 				buildPoints += 200;
-			} else if (s.techGeoSensorRank[0] >= 2 && s.geoSurveyPoints.current - geoSurveyPoints > 2) {
+			} else if (s.techGeoSensorRank.current >= 2 && s.geoSurveyPoints.current - geoSurveyPoints > 2) {
 				geoSurveyPoints += 2;
 				buildPoints += 150;
 			} else {
@@ -117,19 +117,19 @@ public class Ship {
 			ar = s.armorRating.current - tempArmorLevels + 1;
 			sbar = Math.round(mass+aHS*1.0461); //this constant seems to work well
 			asr = Math.pow(0.75*Math.sqrt(Math.PI)*sbar, 2.0/3.0); //not the true ASR as shown on the construction screen
-			aHS = Math.round((ar*asr/s.techArmorWeight[0])*10)/10.0;
+			aHS = Math.round((ar*asr/s.techArmorWeight.current)*10)/10.0;
 			tempArmorLevels--;
 		}
 		mass += aHS;
-		buildPoints += aHS * s.techArmorWeight[0];
+		buildPoints += aHS * s.techArmorWeight.current;
 		armorWidth = asr;
 		
 		//MAGAZINE ===========================================================
 		//this formula took ages to figure out, and it is sometimes off by just a little tiny bit
-		magazineCapacity = s.magazineNumber.current*(int)((s.magazineSize.current-((s.magazineHTK.current-1.0)*Math.pow(s.magazineSize.current,0.669985)*0.04))*s.techFeedEfficiency[0]*20);
+		magazineCapacity = s.magazineNumber.current*(int)((s.magazineSize.current-((s.magazineHTK.current-1.0)*Math.pow(s.magazineSize.current,0.669985)*0.04))*s.techFeedEfficiency.current*20);
 		
 		//ENGINE =============================================================
-		fuelUse = s.techFuelConsumption[0] * (1 - s.engineSize.current * 0.01) * Math.pow(s.enginePowerMod.current, 2.5);
+		fuelUse = s.techFuelConsumption.current * (1 - s.engineSize.current * 0.01) * Math.pow(s.enginePowerMod.current, 2.5);
 		
 		velocity = 1000 * (double)(rawEP)/mass;
 		distance = velocity * s.fuelReserves.current * 3.6 / (rawEP * fuelUse) / 1000;
@@ -146,14 +146,14 @@ public class Ship {
 		mSP = buildPoints * (s.numberOfEngineerSpaces.current/mass)/0.08 + 1000 * s.numberOfMaintStorage.current;
 
 		//BUILD TIME =========================================================
-		buildTime = buildPoints / (s.techBaseBuildRate[0] * (1+(((mass/100)-1)/2)));
+		buildTime = buildPoints / (s.techBaseBuildRate.current * (1+(((mass/100)-1)/2)));
 	}
 	
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("0.0");
 		
 		//TOP BAR
-		String r = s.shipName[0] + " class " + s.shipClass[0] + "\t" + ((int)mass * 50) + " tons\t" + crew + " Crew\t" + df.format(buildPoints) + " BP\n";
+		String r = s.shipName[0] + " class " + s.shipClass[0] + "\t" + ((int)Math.ceil(mass) * 50) + " tons\t" + crew + " Crew\t" + df.format(buildPoints) + " BP\n";
 		//SECOND BAR
 		r += (int)(velocity) + " km/s\tArmor " + (int)s.armorRating.current + "-" + (int)armorWidth + "\n";
 		//MAINT BAR
@@ -166,7 +166,7 @@ public class Ship {
 		r += "\n";
 		
 		//ENGINE STATS
-		r += (int)s.numberOfEngines.current + "x" + (int)(s.techEnginePower[0] * s.engineSize.current * s.enginePowerMod.current) + "EP\t" + s.enginePowerMod.current + "x power\n";
+		r += (int)s.numberOfEngines.current + "x" + (int)(s.techEnginePower.current * s.engineSize.current * s.enginePowerMod.current) + "EP\t" + s.enginePowerMod.current + "x power\n";
 		r += (int)s.fuelReserves.current + " kL\t" + df.format(distance) + " Tm (" + (int)daysOfFuel + " days)\n";
 		
 		r += "\n";

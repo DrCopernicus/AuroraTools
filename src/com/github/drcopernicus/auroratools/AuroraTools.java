@@ -70,14 +70,14 @@ public class AuroraTools extends JFrame implements ActionListener {
 		components = new SpecialPanel[]{
 				new OneStringPanel("Name", settings.shipName, flavPanel),
 				new OneStringPanel("Class", settings.shipClass, flavPanel),
-				new OneDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techPanel),
-				new OneDoublePanel("Magazine ejection", settings.techMagazineEjection, techPanel),
-				new OneDoublePanel("EP / HS", settings.techEnginePower, techPanel),
-				new OneDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techPanel),
-				new OneDoublePanel("Fuel consumption", settings.techFuelConsumption, techPanel),
-				new OneDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techPanel),
-				new OneDoublePanel("Grav sensor rank", settings.techGravSensorRank, techPanel),
-				new OneDoublePanel("Armor strength / HS", settings.techArmorWeight, techPanel),
+				new ThreeDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techPanel),
+				new ThreeDoublePanel("Magazine ejection", settings.techMagazineEjection, techPanel),
+				new ThreeDoublePanel("EP / HS", settings.techEnginePower, techPanel),
+				new ThreeDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techPanel),
+				new ThreeDoublePanel("Fuel consumption", settings.techFuelConsumption, techPanel),
+				new ThreeDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techPanel),
+				new ThreeDoublePanel("Grav sensor rank", settings.techGravSensorRank, techPanel),
+				new ThreeDoublePanel("Armor strength / HS", settings.techArmorWeight, techPanel),
 				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel),
 				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel),
 				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel),
@@ -119,16 +119,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		AuroraTools cui = new AuroraTools();
 	}
-	
-	/**
-	 * returns the current value of the test (given the test number)
-	 * @param vs
-	 * @param i
-	 * @return
-	 */
-	private double currentTestValue(VariableSetting vs, int i) {
-		return vs.min + vs.spacing*i;
-	}
 
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource() == generateButton) {
@@ -153,7 +143,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			}
 			int numOfShips = 1;
 			for (int i = 0; i < settings.listOfSettings.length; i++) {
-				numOfShips *= settings.listOfSettings[i].number;
+				numOfShips *= settings.listOfSettings[i].getNumber();
 			}
 			generateButton.setText("Generate " + numOfShips + " ships!");
 			megaPanel.updateUI();
@@ -182,9 +172,8 @@ public class AuroraTools extends JFrame implements ActionListener {
 	 */
 	public void generateASetting(int settingsNumber) {
 		//change the settings value settings.listOfSettings[i].number times.
-		for (int j = 0; j < settings.listOfSettings[settingsNumber].number; j++) {
-			settings.listOfSettings[settingsNumber].current = currentTestValue(settings.listOfSettings[settingsNumber], j);
-			settings.listOfSettings[settingsNumber].count = j;
+		for (int j = 0; j < settings.listOfSettings[settingsNumber].getNumber(); j++) {
+			settings.listOfSettings[settingsNumber].advanceTo(j);
 			if (settingsNumber < settings.listOfSettings.length-1) {
 				generateASetting(settingsNumber+1);
 			} else {
@@ -212,6 +201,9 @@ public class AuroraTools extends JFrame implements ActionListener {
 		if (ship.commercial && !settings.commercial[0]) return;
 		shipsToDisplay[shipsDisplayed] = ship;
 		shipsDisplayed++;
+		
+		//record data for number of possible ships within certain parameters
+		//useful for removing excess calculations that don't actually result in ships
 		for (int i = 0; i < settings.listOfSettings.length; i++) {
 			settings.listOfSettings[i].values[settings.listOfSettings[i].count]++;
 		}
@@ -241,23 +233,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 		
 		public void save() {
 			set[0] = value.getText();
-		}
-	}
-	
-	private class OneDoublePanel extends SpecialPanel {
-		public JTextField value = new JTextField(3);
-		public double[] set;
-		
-		public OneDoublePanel(String title, double[] set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(value);
-			panel.add(this);
-		}
-		
-		public void save() {
-			set[0] = Double.parseDouble(value.getText());
 		}
 	}
 	
@@ -306,39 +281,30 @@ public class AuroraTools extends JFrame implements ActionListener {
 		public JTextField max = new JTextField(3);
 		public JTextField spacing = new JTextField(3);
 		public VariableSetting set;
-		public JLabel runs = new JLabel("0");
+		public JLabel runs = new JLabel("0x");
 		
 		public ThreeDoublePanel(String title, VariableSetting set, JPanel panel) {
 			super(title);
 			this.set = set;
 			this.add(label);
 			this.add(min);
-			min.setText(set.min+"");
+			min.setText(set.getMin()+"");
 			this.add(max);
-			max.setText(set.max+"");
+			max.setText(set.getMax()+"");
 			this.add(spacing);
-			spacing.setText(set.spacing+"");
+			spacing.setText(set.getSpacing()+"");
 			runs.setPreferredSize(new Dimension(40,runs.getPreferredSize().height));
 			this.add(runs);
+			
+			setToolTipText("No runs.");
+			
 			panel.add(this);
 		}
 		
 		public void save() {
-			set.min = Double.parseDouble(min.getText());
-			set.max = Double.parseDouble(max.getText());
-			set.spacing = Double.parseDouble(spacing.getText());
-			set.current = set.min;
-			set.recalculate();
-			runs.setText(""+set.number);
-		}
-		
-		public void updateText() {
-			String tooltipText = "<html><pre>";
-			for (int i = 0; i < set.values.length; i++) {
-				tooltipText += currentTestValue(set,i)+"   "+set.values[i]+"<br/>";
-			}
-			tooltipText += "</pre></html>";
-			label.setToolTipText(tooltipText);
+			set.setAll(Double.parseDouble(min.getText()), Double.parseDouble(max.getText()), Double.parseDouble(spacing.getText()));
+			runs.setText((int)set.getNumber()+"x");
+			setToolTipText("Tooltip");
 		}
 	}
 }

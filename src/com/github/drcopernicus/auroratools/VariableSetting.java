@@ -1,36 +1,36 @@
 package com.github.drcopernicus.auroratools;
 
 public class VariableSetting {
-	public double min;
-	public double max;
-	public double spacing;
+	protected double min;
+	protected double max;
+	protected double spacing;
 	public double current;
-	public int number;
+	protected int number;
 	public int count;
 	
 	public int[] values;
 	
-	public VariableSetting(double min, double max, double spacing, double current) {
-		this.min = min;
-		this.max = max;
-		this.spacing = spacing;
-		this.current = current;
-		number = (int)((max - min)/spacing) + 1;
-		count = 0;
-		values = new int[number];
+	public void setAll(double min, double max, double spacing) {
+		
 	}
 	
-	public VariableSetting(double min, double max, double spacing) {
-		this(min, max, spacing, min);
+	public double getMin() {
+		return min;
 	}
 
-	public VariableSetting() {
-		 this(0.0, 0.0, 0.0, 0.0);
+	public double getMax() {
+		return max;
+	}
+
+	public double getSpacing() {
+		return spacing;
 	}
 	
-	public void recalculate() {
-		number = (int)((max - min)/spacing) + 1;
-		count = 0;
-		values = new int[number];
+	public double getNumber() {
+		return number;
+	}
+	
+	public void advanceTo(int i) {
+		
 	}
 }
