@@ -33,4 +33,8 @@ public class VariableSetting {
 	public void advanceTo(int i) {
 		
 	}
+
+	public double getValueAt(int i) {
+		return -1;
+	}
 }

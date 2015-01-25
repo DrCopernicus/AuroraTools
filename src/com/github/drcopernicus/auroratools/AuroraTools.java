@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -296,7 +297,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			runs.setPreferredSize(new Dimension(40,runs.getPreferredSize().height));
 			this.add(runs);
 			
-			setToolTipText("No runs.");
+			setToolTipText("No runs generated yet.");
 			
 			panel.add(this);
 		}
@@ -304,7 +305,21 @@ public class AuroraTools extends JFrame implements ActionListener {
 		public void save() {
 			set.setAll(Double.parseDouble(min.getText()), Double.parseDouble(max.getText()), Double.parseDouble(spacing.getText()));
 			runs.setText((int)set.getNumber()+"x");
-			setToolTipText("Tooltip");
+			updateText();
+		}
+		
+		public void updateText() {
+			DecimalFormat df = new DecimalFormat("#.###");
+			String tooltiptext = "<html><style>td {border:1px solid black;}</style><table cellspacing=\"0\"><tr>";
+			for (int i = 0; i < set.getNumber(); i++) {
+				tooltiptext += "<td>" + df.format(set.getValueAt(i)) + "</td>";
+			}
+			tooltiptext += "</tr><tr>";
+			for (int i = 0; i < set.getNumber(); i++) {
+				tooltiptext += "<td>" + set.values[i] + "</td>";
+			}
+			tooltiptext += "</tr></table></html>";
+			setToolTipText(tooltiptext);
 		}
 	}
 }

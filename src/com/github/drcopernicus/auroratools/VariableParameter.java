@@ -19,4 +19,8 @@ public class VariableParameter extends VariableSetting {
 		current = min + spacing * i;
 		count = i;
 	}
+	
+	public double getValueAt(int i) {
+		return min + spacing * i;
+	}
 }

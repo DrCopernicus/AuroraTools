@@ -40,4 +40,8 @@ public class VariableTech extends VariableSetting {
 		current = choices[choice];
 		count = i;
 	}
+	
+	public double getValueAt(int i) {
+		return choices[lowest+i];
+	}
 }
