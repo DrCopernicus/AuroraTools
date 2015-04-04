@@ -1,4 +1,7 @@
-package com.github.drcopernicus.auroratools;
+package drcopernicus.auroratools.ship;
+
+import drcopernicus.auroratools.AuroraTools;
+import drcopernicus.auroratools.Settings;
 
 import java.text.DecimalFormat;
 

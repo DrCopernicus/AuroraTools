@@ -1,4 +1,4 @@
-package com.github.drcopernicus.auroratools;
+package drcopernicus.auroratools.parameter;
 
 public class VariableParameter extends VariableSetting {	
 	public VariableParameter(double min, double max, double spacing) {

@@ -1,4 +1,4 @@
-package com.github.drcopernicus.auroratools;
+package drcopernicus.auroratools.parameter;
 
 public class VariableSetting {
 	protected double min;

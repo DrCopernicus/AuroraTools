@@ -1,4 +1,7 @@
-package com.github.drcopernicus.auroratools;
+package drcopernicus.auroratools;
+
+import drcopernicus.auroratools.parameter.VariableSetting;
+import drcopernicus.auroratools.ship.Ship;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

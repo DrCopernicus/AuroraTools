@@ -1,6 +1,10 @@
-package com.github.drcopernicus.auroratools;
+package drcopernicus.auroratools;
 
-public class Settings {	
+import drcopernicus.auroratools.parameter.VariableParameter;
+import drcopernicus.auroratools.parameter.VariableSetting;
+import drcopernicus.auroratools.parameter.VariableTech;
+
+public class Settings {
 	//Fancy
 	public String[] shipName = {""};
 	public String[] shipClass = {""};
