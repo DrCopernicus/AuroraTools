@@ -5,8 +5,8 @@ import drcopernicus.auroratools.parameter.Parameter;
 import javax.swing.*;
 
 public abstract class ShipComponent {
-    protected JPanel jPanel;
-    protected JLabel jLabel;
+    private JPanel jPanel;
+    private JLabel namePanel;
 
     public final void save() {
         for (Parameter parameter : getParameters()) {
@@ -30,4 +30,11 @@ public abstract class ShipComponent {
         return jPanel;
     }
     public abstract void updateShip(Ship ship);
+    protected final void makePanel(String name) {
+        jPanel = new JPanel();
+        namePanel = new JLabel(name);
+        for (Parameter parameter : getParameters()) {
+            jPanel.add(parameter.getPanel());
+        }
+    }
 }

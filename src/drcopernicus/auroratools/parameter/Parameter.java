@@ -14,11 +14,11 @@ public class Parameter {
     private JComboBox maxField;
     private JLabel timesLabel;
 
-    public Parameter(String name, Number[] choices, int min, int max) {
+    public Parameter(String name, Number[] choices) {
         this.name = name;
         this.choices = choices;
-        this.min = min;
-        this.max = max;
+        this.min = 0;
+        this.max = choices.length;
         current = min;
 
         jPanel = new JPanel();
@@ -40,8 +40,8 @@ public class Parameter {
         timesLabel.setText(getTimes()+"");
     }
 
-    public Number getValue() {
-        return choices[current];
+    public double getValue() {
+        return choices[current].doubleValue();
     }
 
     public void reset() {
