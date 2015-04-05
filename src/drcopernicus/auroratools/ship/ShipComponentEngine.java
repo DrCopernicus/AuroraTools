@@ -7,10 +7,14 @@ import javax.swing.*;
 public class ShipComponentEngine extends ShipComponent {
     private Parameter count;
     private Parameter engineSize;
+    private Parameter powerMod;
+    private Parameter fuelEfficiency;
 
     public ShipComponentEngine() {
         count = new Parameter("Count", new Integer[]{0,1,2,3,4,5},0,5);
         engineSize = new Parameter("Size", new Integer[]{1,2,3,4,5},0,4);
+        powerMod = new Parameter("Power Mod", new Integer[]{1,2,3,4,5},0,4);
+        fuelEfficiency = new Parameter("Fuel Efficiency", new Integer[]{1,2,3,4,5},0,4);
 
         jPanel = new JPanel();
         jLabel = new JLabel("Engine");
@@ -19,28 +23,12 @@ public class ShipComponentEngine extends ShipComponent {
     }
 
     @Override
-    public void save() {
-        count.save();
-        engineSize.save();
-    }
-
-    @Override
-    public void updateText() {
-
-    }
-
-    @Override
-    public int getTimes() {
-        return count.getTimes() * engineSize.getTimes();
-    }
-
-    @Override
     public Parameter[] getParameters() {
-        return new Parameter[]{count, engineSize};
+        return new Parameter[]{count, engineSize, powerMod, fuelEfficiency};
     }
 
     @Override
-    public JPanel getPanel() {
-        return jPanel;
+    public void updateShip(Ship ship) {
+
     }
 }

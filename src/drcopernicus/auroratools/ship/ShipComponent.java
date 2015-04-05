@@ -8,9 +8,26 @@ public abstract class ShipComponent {
     protected JPanel jPanel;
     protected JLabel jLabel;
 
-    public abstract void save();
-    public abstract void updateText();
-    public abstract int getTimes();
+    public final void save() {
+        for (Parameter parameter : getParameters()) {
+            parameter.save();
+        }
+    }
+    public final void updateText() {
+        for (Parameter parameter : getParameters()) {
+            parameter.updateText();
+        }
+    }
+    public final int getTimes() {
+        int times = 1;
+        for (Parameter parameter : getParameters()) {
+            times *= parameter.getTimes();
+        }
+        return times;
+    };
     public abstract Parameter[] getParameters();
-    public abstract JPanel getPanel();
+    public final JPanel getPanel() {
+        return jPanel;
+    }
+    public abstract void updateShip(Ship ship);
 }

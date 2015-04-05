@@ -8,9 +8,11 @@ public class Parameter {
     private int current;
     private int min;
     private int max;
+
     private JPanel jPanel;
     private JComboBox minField;
     private JComboBox maxField;
+    private JLabel timesLabel;
 
     public Parameter(String name, Number[] choices, int min, int max) {
         this.name = name;
@@ -31,6 +33,11 @@ public class Parameter {
     public void save() {
         min = minField.getSelectedIndex();
         max = maxField.getSelectedIndex();
+        updateText();
+    }
+
+    public void updateText() {
+        timesLabel.setText(getTimes()+"");
     }
 
     public Number getValue() {
@@ -52,10 +59,6 @@ public class Parameter {
      */
     public int getTimes() {
         return max-min+1;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public JPanel getPanel() {
