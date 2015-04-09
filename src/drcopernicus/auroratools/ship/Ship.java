@@ -31,23 +31,23 @@ public class Ship {
 	}
 	
 	public void calculate() {
-//		mass = 0;
-//		magazineCapacity = 0;
-//		rawEP = 0;
-//		velocity = 0;
-//		fuelUse = 0;
-//		daysOfFuel = 0;
-//		crew = 0;
-//		mSP = 0;
-//		annualFailureRate = 0;
-//		buildPoints = 0;
-//		reqCrewQuarters = 0;
-//		buildTime = 0;
-//		gravSurveyPoints = 0;
-//		geoSurveyPoints = 0;
-//		armorWidth = 0;
-//		aHS = 0;
-//		commercial = false;
+		mass = 0;
+		magazineCapacity = 0;
+		rawEP = 0;
+		velocity = 0;
+		fuelUse = 0;
+		daysOfFuel = 0;
+		crew = 0;
+		mSP = 0;
+		annualFailureRate = 0;
+		buildPoints = 0;
+		reqCrewQuarters = 0;
+		buildTime = 0;
+		gravSurveyPoints = 0;
+		geoSurveyPoints = 0;
+		armorWidth = 0;
+		aHS = 0;
+		commercial = false;
 //
 //		//MASS, CREW, AND BUILD POINT CALCULATIONS ===========================
 //		//magazine
@@ -57,12 +57,6 @@ public class Ship {
 //		//fuel tanks
 //		mass += s.fuelReserves.current / 50.0;
 //		buildPoints += s.fuelReserves.current / 25; //the cost actually changes based on the size of the component, so I based it off of ultra large tanks
-//		//engine
-//		mass += s.engineSize.current * s.numberOfEngines.current;
-//		crew += (int)(s.engineSize.current * s.numberOfEngines.current * s.enginePowerMod.current);
-//		rawEP = s.techEnginePower.current * s.engineSize.current * s.numberOfEngines.current * s.enginePowerMod.current;
-//		buildPoints += rawEP / 2; //also depends on the thermal signature reduction of the engine, but this has yet to be implemented
-//		commercial = s.enginePowerMod.current <= 0.5 && s.engineSize.current >= 25;
 //		//maintenance and engineering spaces
 //		mass += s.numberOfMaintStorage.current * 5 + s.numberOfEngineerSpaces.current;
 //		crew += s.numberOfMaintStorage.current * 2 + s.numberOfEngineerSpaces.current * 5;
@@ -152,6 +146,8 @@ public class Ship {
 //
 //		//BUILD TIME =========================================================
 //		buildTime = buildPoints / (s.techBaseBuildRate.current * (1+(((mass/100)-1)/2)));
+
+		velocity = 1000 * rawEP/mass;
 	}
 
 	public String toString() {
