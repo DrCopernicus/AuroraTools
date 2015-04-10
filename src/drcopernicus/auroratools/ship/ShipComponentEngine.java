@@ -3,8 +3,6 @@ package drcopernicus.auroratools.ship;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
 
-import javax.swing.*;
-
 public class ShipComponentEngine extends ShipComponent {
     private Parameter count;
     private Parameter engineSize;
@@ -14,7 +12,7 @@ public class ShipComponentEngine extends ShipComponent {
 
     public ShipComponentEngine() {
         count = ParameterBuilder.integerRangeParameter("Count",1,50);
-        engineSize = ParameterBuilder.integerRangeParameter("Count",1,50);
+        engineSize = ParameterBuilder.integerRangeParameter("Engine Size",1,50);
         enginePower = new Parameter("Engine Power", new Double[]{5.0,8.0,12.0,16.0,20.0,25.0,32.0,40.0,50.0,60.0,80.0,100.0});
         powerMod = new Parameter("Power Mod", new Double[]{0.1,1.0,3.0});
         fuelEfficiency = new Parameter("Fuel Efficiency", new Integer[]{1,2,3,4,5});

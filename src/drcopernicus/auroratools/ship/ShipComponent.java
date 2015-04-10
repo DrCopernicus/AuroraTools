@@ -3,20 +3,22 @@ package drcopernicus.auroratools.ship;
 import drcopernicus.auroratools.parameter.Parameter;
 
 import javax.swing.*;
+import java.awt.*;
 
 public abstract class ShipComponent {
+    private String name;
     private JPanel jPanel;
-    private JLabel namePanel;
+    private JPanel componentPanel;
+    private JLabel nameLabel;
 
     public final void save() {
         for (Parameter parameter : getParameters()) {
             parameter.save();
         }
+        updateText();
     }
     public final void updateText() {
-        for (Parameter parameter : getParameters()) {
-            parameter.updateText();
-        }
+        nameLabel.setText(name+" ("+getTimes()+"x)");
     }
     public final int getTimes() {
         int times = 1;
@@ -31,10 +33,19 @@ public abstract class ShipComponent {
     }
     public abstract void updateShip(Ship ship);
     protected final void makePanel(String name) {
+        this.name = name;
         jPanel = new JPanel();
-        namePanel = new JLabel(name);
+        componentPanel = new JPanel();
+        componentPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.WEST;
+        nameLabel = new JLabel(name);
+        jPanel.add(nameLabel);
         for (Parameter parameter : getParameters()) {
-            jPanel.add(parameter.getPanel());
+            gbc.gridy++;
+            componentPanel.add(parameter.getPanel(), gbc);
         }
+        jPanel.add(componentPanel);
     }
 }

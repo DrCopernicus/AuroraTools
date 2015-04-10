@@ -1,6 +1,7 @@
 package drcopernicus.auroratools.parameter;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Parameter {
     private String name;
@@ -10,9 +11,9 @@ public class Parameter {
     private int max;
 
     private JPanel jPanel;
+    private JLabel nameLabel;
     private JComboBox minField;
     private JComboBox maxField;
-    private JLabel timesLabel;
 
     public Parameter(String name, Number[] choices) {
         this.name = name;
@@ -22,12 +23,25 @@ public class Parameter {
         current = min;
 
         jPanel = new JPanel();
+        jPanel.setLayout(new GridBagLayout());
+        JPanel dropDownPanel = new JPanel();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.weightx = 1;
+        nameLabel = new JLabel(name);
         minField = new JComboBox(choices);
         minField.setSelectedIndex(min);
+        minField.setPrototypeDisplayValue("hello world");
         maxField = new JComboBox(choices);
+        maxField.setPrototypeDisplayValue("hello world");
         maxField.setSelectedIndex(max);
-        jPanel.add(minField);
-        jPanel.add(maxField);
+        gbc.gridx++;
+        jPanel.add(nameLabel, gbc);
+        dropDownPanel.add(minField);
+        dropDownPanel.add(maxField);
+        gbc.anchor = GridBagConstraints.EAST;
+        gbc.gridx++;
+        jPanel.add(dropDownPanel, gbc);
     }
 
     public void save() {
@@ -37,7 +51,7 @@ public class Parameter {
     }
 
     public void updateText() {
-        timesLabel.setText(getTimes()+"");
+        nameLabel.setText(name+" ("+getTimes()+"x)");
     }
 
     public double getValue() {

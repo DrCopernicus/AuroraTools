@@ -99,40 +99,6 @@ public class AuroraTools extends JFrame implements ActionListener {
         for (ShipComponent component : components) {
             specPanel.add(component.getPanel());
         }
-		//components array is used for more easily updating the data on them (tooltips, etc.)
-//		components = new SpecialPanel[]{
-//				new OneStringPanel("Name", settings.shipName, flavPanel),
-//				new OneStringPanel("Class", settings.shipClass, flavPanel),
-//				new ThreeDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techMisPanel),
-//				new ThreeDoublePanel("Magazine ejection", settings.techMagazineEjection, techMisPanel),
-//				new ThreeDoublePanel("EP / HS", settings.techEnginePower, techPowPanel),
-//				new ThreeDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techConPanel),
-//				new ThreeDoublePanel("Fuel consumption", settings.techFuelConsumption, techPowPanel),
-//				new ThreeDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techSenPanel),
-//				new ThreeDoublePanel("Grav sensor rank", settings.techGravSensorRank, techSenPanel),
-//				new ThreeDoublePanel("Armor strength / HS", settings.techArmorWeight, techDefPanel),
-//				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel),
-//				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel),
-//				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel),
-//				new ThreeDoublePanel("Geo survey points", settings.geoSurveyPoints, specPanel),
-//				new ThreeDoublePanel("Number of bridges", settings.numberOfBridges, specPanel),
-//				new ThreeDoublePanel("Number of maintenance storage", settings.numberOfMaintStorage, specPanel),
-//				new ThreeDoublePanel("Number of engineering spaces", settings.numberOfEngineerSpaces, specPanel),
-//				new ThreeDoublePanel("Number of magazines", settings.magazineNumber, specPanel),
-//				new ThreeDoublePanel("Magazine size", settings.magazineSize, specPanel),
-//				new ThreeDoublePanel("Magazine HTK", settings.magazineHTK, specPanel),
-//				new ThreeDoublePanel("Engine HS", settings.engineSize, specPanel),
-//				new ThreeDoublePanel("Number of engines", settings.numberOfEngines, specPanel),
-//				new ThreeDoublePanel("Engine power mod", settings.enginePowerMod, specPanel),
-//				new ThreeDoublePanel("Fuel reserves (kL)", settings.fuelReserves, specPanel),
-//				new CheckBoxPanel("Commercial ships allowed", settings.commercial, reqsPanel),
-//				new TwoValuePanel("Velocity (km/s)", settings.velocity, reqsPanel, 0, 9999999),
-//				new TwoValuePanel("Distance (billion km)", settings.distance, reqsPanel, 0, 9999999),
-//				new TwoValuePanel("Magazine capacity", settings.ammoCapacity, reqsPanel, 0, 8000),
-//				new TwoValuePanel("Mass (HS)", settings.mass, reqsPanel, 1, 1000),
-//				new TwoValuePanel("Build time (years)", settings.buildTime, reqsPanel, 0, 1),
-//				new TwoValuePanel("Annual Failure Rate", settings.annualFailureRate, reqsPanel, 0, 5)
-//		};
 		refreshButton = new JButton("Refresh");
 		generateButton = new JButton("Generate ships!");
 		shipsGeneratedLabel = new JLabel("0 generated");
@@ -223,7 +189,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 				if (shipsDisplayed >= MAX_SHIPS_DISPLAYED) {
 					break;
 				} else {
-					generateShip();
+					generateShip(parameterArrayList);
 				}
 			}
 		}
@@ -233,8 +199,11 @@ public class AuroraTools extends JFrame implements ActionListener {
 	/**
 	 * Generates an individual ship based off of Settings specifications. Adds the ship if it qualifies, otherwise ignores it.
 	 */
-	public void generateShip() {
+	public void generateShip(ArrayList<Parameter> parameterArrayList) {
 		Ship ship = new Ship();
+        for (ShipComponent component : components) {
+            component.updateShip(ship);
+        }
 		shipsGenerated++;
 //		if (ship.mass<settings.mass[0]||ship.mass>settings.mass[1]) return;
 //		if (ship.distance<settings.distance[0]||ship.distance>settings.distance[1]) return;
