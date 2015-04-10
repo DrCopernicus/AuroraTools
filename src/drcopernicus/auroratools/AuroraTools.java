@@ -1,7 +1,6 @@
 package drcopernicus.auroratools;
 
 import drcopernicus.auroratools.parameter.Parameter;
-import drcopernicus.auroratools.parameter.VariableSetting;
 import drcopernicus.auroratools.ship.Ship;
 import drcopernicus.auroratools.ship.ShipComponent;
 import drcopernicus.auroratools.ship.ShipComponentEngine;
@@ -252,118 +251,5 @@ public class AuroraTools extends JFrame implements ActionListener {
 //		for (int i = 0; i < settings.listOfSettings.length; i++) {
 //			settings.listOfSettings[i].values[settings.listOfSettings[i].count]++;
 //		}
-	}
-	
-	private class SpecialPanel extends JPanel {
-		public JLabel label;
-		public SpecialPanel(String title) {
-			this.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			label = new JLabel(title);
-		}
-		public void save() {}
-		public void updateText() {}
-	}
-	
-	private class OneStringPanel extends SpecialPanel {
-		public JTextField value = new JTextField(10);
-		public String[] set;
-		
-		public OneStringPanel(String title, String[] set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(value);
-			panel.add(this);
-		}
-		
-		public void save() {
-			set[0] = value.getText();
-		}
-	}
-	
-	private class TwoValuePanel extends SpecialPanel {
-		public JTextField min = new JTextField(8);
-		public JTextField max = new JTextField(8);
-		public double[] set;
-
-		public TwoValuePanel(String title, double[] set, JPanel panel, double minV, double maxV) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(min);
-			min.setText(minV+"");
-			this.add(max);
-			max.setText(maxV+"");
-			panel.add(this);
-
-		}
-		
-		public void save() {
-			set[0] = Double.parseDouble(min.getText());
-			set[1] = Double.parseDouble(max.getText());
-		}
-	}
-	
-	private class CheckBoxPanel extends SpecialPanel {
-		public JCheckBox val = new JCheckBox();
-		public boolean[] set;
-
-		public CheckBoxPanel(String title, boolean[] set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(val);
-			panel.add(this);
-		}
-		
-		public void save() {
-			set[0] = val.isSelected();
-		}
-	}
-	
-	private class ThreeDoublePanel extends SpecialPanel {
-		public JTextField min = new JTextField(3);
-		public JTextField max = new JTextField(3);
-		public JTextField spacing = new JTextField(3);
-		public VariableSetting set;
-		public JLabel runs = new JLabel("0x");
-		
-		public ThreeDoublePanel(String title, VariableSetting set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(min);
-			min.setText(set.getMin()+"");
-			this.add(max);
-			max.setText(set.getMax()+"");
-			this.add(spacing);
-			spacing.setText(set.getSpacing()+"");
-			runs.setPreferredSize(new Dimension(40,runs.getPreferredSize().height));
-			this.add(runs);
-			
-			setToolTipText("No runs generated yet.");
-			
-			panel.add(this);
-		}
-		
-		public void save() {
-			set.setAll(Double.parseDouble(min.getText()), Double.parseDouble(max.getText()), Double.parseDouble(spacing.getText()));
-			runs.setText((int)set.getNumber()+"x");
-			updateText();
-		}
-		
-		public void updateText() {
-			DecimalFormat df = new DecimalFormat("#.###");
-			String tooltiptext = "<html><style>td {border:1px solid black;}</style><table cellspacing=\"0\"><tr>";
-			for (int i = 0; i < set.getNumber(); i++) {
-				tooltiptext += "<td>" + df.format(set.getValueAt(i)) + "</td>";
-			}
-			tooltiptext += "</tr><tr>";
-			for (int i = 0; i < set.getNumber(); i++) {
-				tooltiptext += "<td>" + set.values[i] + "</td>";
-			}
-			tooltiptext += "</tr></table></html>";
-			setToolTipText(tooltiptext);
-		}
 	}
 }

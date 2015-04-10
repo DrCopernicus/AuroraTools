@@ -6,6 +6,6 @@ public class ParameterBuilder {
         for (int i = 0; i < range.length; i++) {
             range[i] = min+i;
         }
-        return new Parameter(name, range, 0, range.length);
+        return new Parameter(name, range);
     }
 }

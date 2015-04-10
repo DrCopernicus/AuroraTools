@@ -18,7 +18,7 @@ public class Parameter {
         this.name = name;
         this.choices = choices;
         this.min = 0;
-        this.max = choices.length;
+        this.max = choices.length-1;
         current = min;
 
         jPanel = new JPanel();
