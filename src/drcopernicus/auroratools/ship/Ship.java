@@ -8,8 +8,12 @@ import java.text.DecimalFormat;
 public class Ship {
     public double mass; // HS
     public double buildPoints;
+
     public int crew;
     public int deploymentTime;
+    public int gravSurveyPoints;
+    public int geoSurveyPoints;
+
     public boolean commercial;
 
 	public double magazineCapacity;
@@ -22,11 +26,8 @@ public class Ship {
 	public double annualFailureRate;
 	public double reqCrewQuarters;
 	public double buildTime;
-	public double gravSurveyPoints;
-	public double geoSurveyPoints;
 	public double armorWidth;
 	public double aHS;
-	private Settings s = AuroraTools.settings;
 	
 	public Ship() {
 		calculate();
@@ -63,48 +64,10 @@ public class Ship {
 //		mass += s.numberOfMaintStorage.current * 5 + s.numberOfEngineerSpaces.current;
 //		crew += s.numberOfMaintStorage.current * 2 + s.numberOfEngineerSpaces.current * 5;
 //		buildPoints += s.numberOfMaintStorage.current * 15 + s.numberOfEngineerSpaces.current * 10;
-//		//crew
 //		//bridge
 //		mass += s.numberOfBridges.current;
 //		crew += s.numberOfBridges.current * 5;
 //		buildPoints += s.numberOfBridges.current * 10;
-//		//sensor
-//		while (s.gravSurveyPoints.current > gravSurveyPoints) {
-//			//tries to optimize the grav sensors on the ship by filling out the biggest (and therefore most cost effective) sensors first
-//			if (s.techGravSensorRank.current >= 4 && s.gravSurveyPoints.current - gravSurveyPoints > 5) {
-//				gravSurveyPoints += 5;
-//				buildPoints += 300;
-//			} else if (s.techGravSensorRank.current >= 3 && s.gravSurveyPoints.current - gravSurveyPoints > 3) {
-//				gravSurveyPoints += 3;
-//				buildPoints += 200;
-//			} else if (s.techGravSensorRank.current >= 2 && s.gravSurveyPoints.current - gravSurveyPoints > 2) {
-//				gravSurveyPoints += 2;
-//				buildPoints += 150;
-//			} else {
-//				gravSurveyPoints += 1;
-//				buildPoints += 100;
-//			}
-//			mass += 5;
-//			crew += 10;
-//		}
-//		while (s.geoSurveyPoints.current > geoSurveyPoints) {
-//			//tries to optimize the geo sensors on the ship by filling out the biggest (and therefore most cost effective) sensors first
-//			if (s.techGeoSensorRank.current >= 4 && s.geoSurveyPoints.current - geoSurveyPoints > 5) {
-//				geoSurveyPoints += 5;
-//				buildPoints += 300;
-//			} else if (s.techGeoSensorRank.current >= 3 && s.geoSurveyPoints.current - geoSurveyPoints > 3) {
-//				geoSurveyPoints += 3;
-//				buildPoints += 200;
-//			} else if (s.techGeoSensorRank.current >= 2 && s.geoSurveyPoints.current - geoSurveyPoints > 2) {
-//				geoSurveyPoints += 2;
-//				buildPoints += 150;
-//			} else {
-//				geoSurveyPoints += 1;
-//				buildPoints += 100;
-//			}
-//			mass += 5;
-//			crew += 10;
-//		}
 //		//armor
 //		//this algorithm is accurate up to ~20 for small ships (800 HS), and only varies from the actual value for larger ships by less than 1 HS (in most cases)
 //		double ar = 0;
@@ -164,27 +127,27 @@ public class Ship {
 		DecimalFormat df = new DecimalFormat("0.0");
 
 		//TOP BAR
-		String r = s.shipName[0] + " class " + s.shipClass[0] + "\t" + ((int)Math.ceil(mass) * 50) + " tons\t" + crew + " Crew\t" + df.format(buildPoints) + " BP\n";
+		String r = "shipName class shipClass" + "\t" + ((int)Math.ceil(mass) * 50) + " tons\t" + crew + " Crew\t" + df.format(buildPoints) + " BP\n";
 		//SECOND BAR
 //		r += (int)(velocity) + " km/s\tArmor " + (int)s.armorRating.current + "-" + (int)armorWidth + "\n";
-//		//MAINT BAR
-//		r += "MSP " + (int)mSP + "\tAFR " + (int)(annualFailureRate*100) + "%\tIFR " + df.format(annualFailureRate/0.72) + "%\n";
-//		//DEPLOYMENT BAR
+		//MAINT BAR
+		r += "MSP " + (int)mSP + "\tAFR " + (int)(annualFailureRate*100) + "%\tIFR " + df.format(annualFailureRate/0.72) + "%\n";
+		//DEPLOYMENT BAR
 //		r += "Intended Deployment Time: " + s.deploymentTime.current + " months\n";
-//		//MAGAZINE BAR
-//		if (magazineCapacity > 0) r += "Magazine " + (int)magazineCapacity + "\n";
-//
-//		r += "\n";
-//
-//		//ENGINE STATS
+		//MAGAZINE BAR
+		if (magazineCapacity > 0) r += "Magazine " + (int)magazineCapacity + "\n";
+
+		r += "\n";
+
+		//ENGINE STATS
 //		r += (int)s.numberOfEngines.current + "x" + (int)(s.techEnginePower.current * s.engineSize.current * s.enginePowerMod.current) + "EP\t" + s.enginePowerMod.current + "x power\n";
 //		r += (int)s.fuelReserves.current + " kL\t" + df.format(distance) + " Tm (" + (int)daysOfFuel + " days)\n";
-//
-//		r += "\n";
-//
-//		//SENSOR STATS
-//		if (gravSurveyPoints > 0) r += "Gravitational Survey Sensors\t" + (int)gravSurveyPoints + " Survey Points Per Hour\n";
-//		if (geoSurveyPoints > 0) r += "Geological Survey Sensors\t" + (int)geoSurveyPoints + " Survey Points Per Hour\n";
+
+		r += "\n";
+
+		//SENSOR STATS
+		if (gravSurveyPoints > 0) r += "Gravitational Survey Sensors\t" + gravSurveyPoints + " Survey Points Per Hour\n";
+		if (geoSurveyPoints > 0) r += "Geological Survey Sensors\t" + geoSurveyPoints + " Survey Points Per Hour\n";
 
 		return r;
 	}

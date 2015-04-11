@@ -1,34 +1,20 @@
 package drcopernicus.auroratools;
 
 import drcopernicus.auroratools.parameter.Parameter;
-import drcopernicus.auroratools.ship.Ship;
-import drcopernicus.auroratools.ship.ShipComponent;
-import drcopernicus.auroratools.ship.ShipComponentEngine;
+import drcopernicus.auroratools.ship.*;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class AuroraTools extends JFrame implements ActionListener {
-	public static Settings settings;
-//	public SpecialPanel[] components;
     public ShipComponent[] components;
+
+
 	public JButton generateButton;
 	public JButton refreshButton;
 	public JButton dispForwardButton;
@@ -38,7 +24,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 	private int shipsDisplayed;
 	private int shipsGenerated;
 	public JLabel shipsGeneratedLabel;
-	
+
 	private static final int MAX_SHIPS_DISPLAYED = 1000;
 	private Ship[] shipsToDisplay;
 	private int displayThisShip;
@@ -46,11 +32,17 @@ public class AuroraTools extends JFrame implements ActionListener {
 	private JPanel megaPanel;
 	
 	public AuroraTools() {
+        components = new ShipComponent[]{
+                new ShipComponentEngine(),
+                new ShipComponentCrewQuarters(),
+                new ShipComponentGravSensor(),
+                new ShipComponentGeoSensor()};
+
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
 		JPanel flavPanel = new JPanel(new GridLayout(0,1));
 		JPanel techPanel = new JPanel(new GridLayout(0,1));
-		JPanel specPanel = new JPanel(new GridLayout(0,1));
+		JPanel componentPanel = makeComponentPanel();
 		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
 		JPanel dispPanel = new JPanel();
 		JPanel dispSuperButtons = new JPanel();
@@ -79,16 +71,12 @@ public class AuroraTools extends JFrame implements ActionListener {
 //		tabbedTechPane.addTab("Power and Propulsion", techPowPanel);
 //		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Spec", specPanel);
+		tabbedPane.addTab("Spec", componentPanel);
 //		tabbedPane.addTab("Reqs", reqsPanel);
 		tabbedPane.addTab("Disp", dispPanel);
 		
 		megaPanel.add(tabbedPane);
-		settings = new Settings();
-        components = new ShipComponent[]{new ShipComponentEngine()};
-        for (ShipComponent component : components) {
-            specPanel.add(component.getPanel());
-        }
+
 		refreshButton = new JButton("Refresh");
 		generateButton = new JButton("Generate ships!");
 		shipsGeneratedLabel = new JLabel("0 generated");
@@ -108,6 +96,24 @@ public class AuroraTools extends JFrame implements ActionListener {
 	public static void main(String[] args) {
 		new AuroraTools();
 	}
+
+    private JPanel makeComponentPanel() {
+        JPanel componentPanel = new JPanel(new GridLayout(1,0));
+        JPanel activeComponents = new JPanel(new GridLayout(0,1));
+        JPanel availableComponents = new JPanel(new GridLayout(0,1));
+        JScrollPane activeComponentsScroll = new JScrollPane();
+        JScrollPane availableComponentsScroll = new JScrollPane();
+
+        for (ShipComponent component : components) {
+            componentPanel.add(component.getPanel());
+        }
+
+        return componentPanel;
+    }
+
+    private JPanel makeActiveComponentsPanel() {
+        return null;
+    }
 
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource() == generateButton) {
@@ -130,7 +136,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			for (int i = 0; i < components.length; i++) {
 				components[i].save();
 			}
-			int numOfShips = 1;
+			long numOfShips = 1;
 			for (ShipComponent component : components) {
                 numOfShips *= component.getTimes();
             }
@@ -144,7 +150,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			updateDisplayShipField();
 		}
 	}
-	
+
 	public void updateDisplayShipField() {
 		if (shipsToDisplay[displayThisShip] == null) {
 			displayShipField.setText("Ship does not exist");

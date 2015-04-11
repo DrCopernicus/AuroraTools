@@ -4,7 +4,7 @@ import drcopernicus.auroratools.parameter.Parameter;
 
 public class ShipComponentArmor extends ShipComponent {
     public ShipComponentArmor() {
-
+        super("Armor");
     }
 
     @Override
@@ -16,4 +16,10 @@ public class ShipComponentArmor extends ShipComponent {
     public void updateShip(Ship ship) {
 
     }
+
+    @Override
+    public ShipComponent makeNew() {
+        return new ShipComponentArmor();
+    }
+
 }

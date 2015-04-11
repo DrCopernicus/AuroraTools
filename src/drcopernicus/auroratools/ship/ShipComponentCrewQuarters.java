@@ -6,10 +6,9 @@ import drcopernicus.auroratools.parameter.ParameterBuilder;
 public class ShipComponentCrewQuarters extends ShipComponent {
     private Parameter months;
 
-
     public ShipComponentCrewQuarters() {
+        super("Crew Quarters");
         months = ParameterBuilder.integerRangeParameter("Crew Deployment Time", 3, 50);
-        makePanel("Crew Quarters");
     }
     @Override
     public Parameter[] getParameters() {
@@ -19,5 +18,10 @@ public class ShipComponentCrewQuarters extends ShipComponent {
     @Override
     public void updateShip(Ship ship) {
         ship.deploymentTime = (int)months.getValue();
+    }
+
+    @Override
+    public ShipComponent makeNew() {
+        return new ShipComponentCrewQuarters();
     }
 }
