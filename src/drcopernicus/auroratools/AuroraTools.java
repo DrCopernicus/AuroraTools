@@ -12,8 +12,12 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class AuroraTools extends JFrame implements ActionListener {
-    public ShipComponent[] components;
+    private ShipComponent[] components;
+    private ArrayList<ShipComponent> activeComponentArrayList;
 
+    private JPanel activeComponentsPanel;
+    private JScrollPane activeComponentsScroll;
+    private JList<ShipComponent> availableComponents;
 
 	public JButton generateButton;
 	public JButton refreshButton;
@@ -21,6 +25,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 	public JButton dispBackwardButton;
 	public JTextArea displayShipField;
 	public JLabel dispLabel;
+    public JButton addComponentButton;
 	private int shipsDisplayed;
 	private int shipsGenerated;
 	public JLabel shipsGeneratedLabel;
@@ -37,6 +42,8 @@ public class AuroraTools extends JFrame implements ActionListener {
                 new ShipComponentCrewQuarters(),
                 new ShipComponentGravSensor(),
                 new ShipComponentGeoSensor()};
+
+        activeComponentArrayList = new ArrayList<ShipComponent>();
 
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
@@ -99,26 +106,38 @@ public class AuroraTools extends JFrame implements ActionListener {
 
     private JPanel makeComponentPanel() {
         JPanel componentPanel = new JPanel(new GridLayout(1,0));
-        JPanel activeComponents = new JPanel(new GridLayout(0,1));
-        JPanel availableComponents = new JPanel(new GridLayout(0,1));
-        JScrollPane activeComponentsScroll = new JScrollPane();
-        JScrollPane availableComponentsScroll = new JScrollPane();
+        activeComponentsScroll = new JScrollPane();
+        activeComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        makeActiveComponentsPanel();
+        JPanel availableComponentsPanel = new JPanel(new BorderLayout());
+        availableComponents = new JList<ShipComponent>(components);
 
-        for (ShipComponent component : components) {
-            componentPanel.add(component.getPanel());
-        }
+        addComponentButton = new JButton("Add component");
+        addComponentButton.addActionListener(this);
+        availableComponentsPanel.add(availableComponents);
+        availableComponentsPanel.add(addComponentButton, BorderLayout.PAGE_END);
+
+        JScrollPane availableComponentsScroll = new JScrollPane(availableComponentsPanel);
+        availableComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        componentPanel.add(activeComponentsScroll);
+        componentPanel.add(availableComponentsScroll);
 
         return componentPanel;
     }
 
-    private JPanel makeActiveComponentsPanel() {
-        return null;
+    private void makeActiveComponentsPanel() {
+        activeComponentsPanel = new JPanel(new GridLayout(0,1));
+        activeComponentsScroll.getViewport().add(activeComponentsPanel);
+        for (ShipComponent component : activeComponentArrayList) {
+            activeComponentsPanel.add(component.getPanel());
+        }
     }
 
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource() == generateButton) {
-			for (int i = 0; i < components.length; i++) {
-				components[i].save();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.save();
 			}
 			System.out.println("GENERATING SHIPS");
 			shipsDisplayed = 0;
@@ -128,21 +147,26 @@ public class AuroraTools extends JFrame implements ActionListener {
             generate();
 			updateDisplayShipField();
 			System.out.println("SHIPS GENERATED");
-			for (int i = 0; i < components.length; i++) {
-				components[i].updateText();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.updateText();
 			}
 			shipsGeneratedLabel.setText(shipsGenerated+" generated");
 		} else if (a.getSource() == refreshButton) {
-			for (int i = 0; i < components.length; i++) {
-				components[i].save();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.save();
 			}
 			long numOfShips = 1;
-			for (ShipComponent component : components) {
+			for (ShipComponent component : activeComponentArrayList) {
                 numOfShips *= component.getTimes();
             }
 			generateButton.setText("Generate " + numOfShips + " ships!");
 			megaPanel.updateUI();
-		} else if (a.getSource() == dispForwardButton) {
+		} else if (a.getSource() == addComponentButton) {
+            activeComponentArrayList.add(components[availableComponents.getSelectedIndex()].makeNew());
+            makeActiveComponentsPanel();
+            activeComponentsScroll.repaint();
+            activeComponentsScroll.revalidate();
+        } else if (a.getSource() == dispForwardButton) {
 			displayThisShip++;
 			updateDisplayShipField();
 		} else if (a.getSource() == dispBackwardButton) {
@@ -163,7 +187,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 
     public void generate() {
         ArrayList<Parameter> parameterArrayList = new ArrayList<Parameter>();
-        for (ShipComponent component : components) {
+        for (ShipComponent component : activeComponentArrayList) {
             for (Parameter parameter : component.getParameters()) {
                 parameterArrayList.add(parameter);
             }

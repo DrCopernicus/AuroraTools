@@ -53,4 +53,7 @@ public abstract class ShipComponent {
         return jPanel;
     }
     public abstract void updateShip(Ship ship);
+    public String toString() {
+        return name;
+    }
 }
