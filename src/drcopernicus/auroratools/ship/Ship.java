@@ -6,7 +6,12 @@ import drcopernicus.auroratools.Settings;
 import java.text.DecimalFormat;
 
 public class Ship {
-	public double mass; // HS
+    public double mass; // HS
+    public double buildPoints;
+    public int crew;
+    public int deploymentTime;
+    public boolean commercial;
+
 	public double magazineCapacity;
 	public double rawEP;
 	public double velocity; // km/s
@@ -15,15 +20,12 @@ public class Ship {
 	public double daysOfFuel; // days
 	public double mSP;
 	public double annualFailureRate;
-	public double buildPoints;
 	public double reqCrewQuarters;
 	public double buildTime;
 	public double gravSurveyPoints;
 	public double geoSurveyPoints;
 	public double armorWidth;
 	public double aHS;
-	public int crew;
-	public boolean commercial;
 	private Settings s = AuroraTools.settings;
 	
 	public Ship() {
@@ -62,9 +64,6 @@ public class Ship {
 //		crew += s.numberOfMaintStorage.current * 2 + s.numberOfEngineerSpaces.current * 5;
 //		buildPoints += s.numberOfMaintStorage.current * 15 + s.numberOfEngineerSpaces.current * 10;
 //		//crew
-//		reqCrewQuarters = Math.pow(s.deploymentTime.current,1/3)*crew/50.0;
-//		mass += Math.round(reqCrewQuarters*10)/10.0;
-//		buildPoints += Math.round(reqCrewQuarters*10);
 //		//bridge
 //		mass += s.numberOfBridges.current;
 //		crew += s.numberOfBridges.current * 5;
@@ -147,8 +146,19 @@ public class Ship {
 //		//BUILD TIME =========================================================
 //		buildTime = buildPoints / (s.techBaseBuildRate.current * (1+(((mass/100)-1)/2)));
 
-		velocity = 1000 * rawEP/mass;
+        calculateCrewQuarters();
+        calculateEngine();
 	}
+
+    public void calculateCrewQuarters() {
+        reqCrewQuarters = Math.pow(deploymentTime,1/3)*crew/50.0;
+        mass += Math.round(reqCrewQuarters*10)/10.0;
+        buildPoints += Math.round(reqCrewQuarters*10);
+    }
+
+    public void calculateEngine() {
+        velocity = 1000 * rawEP/mass;
+    }
 
 	public String toString() {
 		DecimalFormat df = new DecimalFormat("0.0");

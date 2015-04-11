@@ -50,14 +50,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
 		JPanel flavPanel = new JPanel(new GridLayout(0,1));
 		JPanel techPanel = new JPanel(new GridLayout(0,1));
-		JPanel techBioPanel = new JPanel(new GridLayout(0,1));
-		JPanel techConPanel = new JPanel(new GridLayout(0,1));
-		JPanel techDefPanel = new JPanel(new GridLayout(0,1));
-		JPanel techEnePanel = new JPanel(new GridLayout(0,1));
-		JPanel techLogPanel = new JPanel(new GridLayout(0,1));
-		JPanel techMisPanel = new JPanel(new GridLayout(0,1));
-		JPanel techPowPanel = new JPanel(new GridLayout(0,1));
-		JPanel techSenPanel = new JPanel(new GridLayout(0,1));
 		JPanel specPanel = new JPanel(new GridLayout(0,1));
 		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
 		JPanel dispPanel = new JPanel();
@@ -87,8 +79,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 //		tabbedTechPane.addTab("Power and Propulsion", techPowPanel);
 //		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
 		JTabbedPane tabbedPane = new JTabbedPane();
-//		tabbedPane.addTab("Flav", flavPanel);
-//		tabbedPane.addTab("Tech", techPanel);
 		tabbedPane.addTab("Spec", specPanel);
 //		tabbedPane.addTab("Reqs", reqsPanel);
 		tabbedPane.addTab("Disp", dispPanel);
