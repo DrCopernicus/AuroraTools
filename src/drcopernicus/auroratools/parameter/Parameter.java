@@ -4,16 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Parameter {
-    private String name;
-    private Number[] choices;
-    private int current;
-    private int min;
-    private int max;
+    protected String name;
+    protected Number[] choices;
+    protected int current;
+    protected int min;
+    protected int max;
 
-    private JPanel jPanel;
-    private JLabel nameLabel;
-    private JComboBox minField;
-    private JComboBox maxField;
+    protected JPanel jPanel;
+    protected JLabel nameLabel;
+    protected JComboBox minField;
+    protected JComboBox maxField;
 
     public Parameter(String name, Number[] choices) {
         this.name = name;
@@ -21,27 +21,6 @@ public class Parameter {
         this.min = 0;
         this.max = choices.length-1;
         current = min;
-
-        jPanel = new JPanel();
-        jPanel.setLayout(new GridBagLayout());
-        JPanel dropDownPanel = new JPanel();
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.weightx = 1;
-        nameLabel = new JLabel(name);
-        minField = new JComboBox(choices);
-        minField.setSelectedIndex(min);
-        minField.setPrototypeDisplayValue("hello world");
-        maxField = new JComboBox(choices);
-        maxField.setPrototypeDisplayValue("hello world");
-        maxField.setSelectedIndex(max);
-        gbc.gridx++;
-        jPanel.add(nameLabel, gbc);
-        dropDownPanel.add(minField);
-        dropDownPanel.add(maxField);
-        gbc.anchor = GridBagConstraints.EAST;
-        gbc.gridx++;
-        jPanel.add(dropDownPanel, gbc);
     }
 
     public void save() {
@@ -76,6 +55,28 @@ public class Parameter {
     }
 
     public JPanel getPanel() {
+        if (jPanel == null) {
+            jPanel = new JPanel();
+            jPanel.setLayout(new GridBagLayout());
+            JPanel dropDownPanel = new JPanel();
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.weightx = 1;
+            nameLabel = new JLabel(name);
+            minField = new JComboBox(choices);
+            minField.setSelectedIndex(min);
+            minField.setPrototypeDisplayValue("hello world");
+            maxField = new JComboBox(choices);
+            maxField.setPrototypeDisplayValue("hello world");
+            maxField.setSelectedIndex(max);
+            gbc.gridx++;
+            jPanel.add(nameLabel, gbc);
+            dropDownPanel.add(minField);
+            dropDownPanel.add(maxField);
+            gbc.anchor = GridBagConstraints.EAST;
+            gbc.gridx++;
+            jPanel.add(dropDownPanel, gbc);
+        }
         return jPanel;
     }
 }

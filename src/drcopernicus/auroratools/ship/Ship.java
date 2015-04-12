@@ -13,6 +13,8 @@ public class Ship {
     public int deploymentTime;
     public int gravSurveyPoints;
     public int geoSurveyPoints;
+    public int armorRating;
+    public int fuelReserves; // kL
 
     public boolean commercial;
 
@@ -89,28 +91,12 @@ public class Ship {
 //		//this formula took ages to figure out, and it is sometimes off by just a little tiny bit
 //		magazineCapacity = s.magazineNumber.current*(int)((s.magazineSize.current-((s.magazineHTK.current-1.0)*Math.pow(s.magazineSize.current,0.669985)*0.04))*s.techFeedEfficiency.current*20);
 //
-//		//ENGINE =============================================================
-//		fuelUse = s.techFuelConsumption.current * (1 - s.engineSize.current * 0.01) * Math.pow(s.enginePowerMod.current, 2.5);
-//
-//		velocity = 1000 * (double)(rawEP)/mass;
-//		distance = velocity * s.fuelReserves.current * 3.6 / (rawEP * fuelUse) / 1000;
-//		daysOfFuel = s.fuelReserves.current / (rawEP * fuelUse) * (125.0/3.0);
-//
-//		//MAINTENANCE ========================================================
-//		if (s.numberOfEngineerSpaces.current == 0) {
-//			annualFailureRate = mass/20.0;
-//		} else {
-//			//annual fail rate = mass/200 * 4/(100*percent of hull dedicated to engineering)
-//			//percent of hull dedicated to engineering = engineering spaces/mass
-//			annualFailureRate = mass * mass / (s.numberOfEngineerSpaces.current * 5000);
-//		}
-//		mSP = buildPoints * (s.numberOfEngineerSpaces.current/mass)/0.08 + 1000 * s.numberOfMaintStorage.current;
-//
 //		//BUILD TIME =========================================================
 //		buildTime = buildPoints / (s.techBaseBuildRate.current * (1+(((mass/100)-1)/2)));
 
         calculateCrewQuarters();
         calculateEngine();
+        calculateMaintenance();
 	}
 
     public void calculateCrewQuarters() {
@@ -121,6 +107,20 @@ public class Ship {
 
     public void calculateEngine() {
         velocity = 1000 * rawEP/mass;
+		distance = velocity * fuelReserves * 3.6 / (rawEP * fuelUse) / 1000;
+//		daysOfFuel = s.fuelReserves.current / (rawEP * fuelUse) * (125.0/3.0);
+    }
+
+    public void calculateMaintenance() {
+//		//MAINTENANCE ========================================================
+//		if (s.numberOfEngineerSpaces.current == 0) {
+//			annualFailureRate = mass/20.0;
+//		} else {
+//			//annual fail rate = mass/200 * 4/(100*percent of hull dedicated to engineering)
+//			//percent of hull dedicated to engineering = engineering spaces/mass
+//			annualFailureRate = mass * mass / (s.numberOfEngineerSpaces.current * 5000);
+//		}
+//		mSP = buildPoints * (s.numberOfEngineerSpaces.current/mass)/0.08 + 1000 * s.numberOfMaintStorage.current;
     }
 
 	public String toString() {

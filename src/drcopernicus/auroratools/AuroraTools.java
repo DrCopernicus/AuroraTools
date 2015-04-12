@@ -38,8 +38,12 @@ public class AuroraTools extends JFrame implements ActionListener {
 	
 	public AuroraTools() {
         components = new ShipComponent[]{
-                new ShipComponentEngine(),
+                new ShipComponentArmor(),
+                new ShipComponentBridge(),
                 new ShipComponentCrewQuarters(),
+                new ShipComponentEngine(),
+                new ShipComponentEngineeringSpaces(),
+                new ShipComponentFuelStorage(),
                 new ShipComponentGravSensor(),
                 new ShipComponentGeoSensor()};
 
