@@ -15,6 +15,7 @@ public class Ship {
     public int geoSurveyPoints;
     public int armorRating;
     public int fuelReserves; // kL
+    public int cargoCapacity; // tons
 
     public boolean commercial;
 
@@ -136,6 +137,7 @@ public class Ship {
 //		r += "Intended Deployment Time: " + s.deploymentTime.current + " months\n";
 		//MAGAZINE BAR
 		if (magazineCapacity > 0) r += "Magazine " + (int)magazineCapacity + "\n";
+        if (cargoCapacity > 0) r += "Cargo Capacity " + cargoCapacity + "\n";
 
 		r += "\n";
 

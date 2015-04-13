@@ -13,6 +13,7 @@ import javax.swing.*;
 
 public class AuroraTools extends JFrame implements ActionListener {
     private ShipComponent[] components;
+    private ShipConstraint constraints;
     private ArrayList<ShipComponent> activeComponentArrayList;
 
     private JPanel activeComponentsPanel;
@@ -40,12 +41,15 @@ public class AuroraTools extends JFrame implements ActionListener {
         components = new ShipComponent[]{
                 new ShipComponentArmor(),
                 new ShipComponentBridge(),
+                new ShipComponentCargoHold(),
                 new ShipComponentCrewQuarters(),
                 new ShipComponentEngine(),
                 new ShipComponentEngineeringSpaces(),
                 new ShipComponentFuelStorage(),
                 new ShipComponentGravSensor(),
                 new ShipComponentGeoSensor()};
+
+        constraints = new ShipConstraint();
 
         activeComponentArrayList = new ArrayList<ShipComponent>();
 
@@ -55,6 +59,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 		JPanel techPanel = new JPanel(new GridLayout(0,1));
 		JPanel componentPanel = makeComponentPanel();
 		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
+        reqsPanel.add(constraints.getPanel());
 		JPanel dispPanel = new JPanel();
 		JPanel dispSuperButtons = new JPanel();
 		JPanel dispButtons = new JPanel();
@@ -83,14 +88,14 @@ public class AuroraTools extends JFrame implements ActionListener {
 //		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Spec", componentPanel);
-//		tabbedPane.addTab("Reqs", reqsPanel);
+		tabbedPane.addTab("Reqs", reqsPanel);
 		tabbedPane.addTab("Disp", dispPanel);
 		
 		megaPanel.add(tabbedPane);
 
 		refreshButton = new JButton("Refresh");
 		generateButton = new JButton("Generate ships!");
-		shipsGeneratedLabel = new JLabel("0 generated");
+		shipsGeneratedLabel = new JLabel("0 generated, 0 displayed");
 		refreshButton.addActionListener(this);
 		generateButton.addActionListener(this);
 		JPanel littleButtonPanel = new JPanel();
@@ -143,6 +148,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			for (ShipComponent component : activeComponentArrayList) {
 				component.save();
 			}
+            constraints.save();
 			System.out.println("GENERATING SHIPS");
 			shipsDisplayed = 0;
 			shipsGenerated = 0;
@@ -154,11 +160,12 @@ public class AuroraTools extends JFrame implements ActionListener {
 			for (ShipComponent component : activeComponentArrayList) {
 				component.updateText();
 			}
-			shipsGeneratedLabel.setText(shipsGenerated+" generated");
+			shipsGeneratedLabel.setText(shipsGenerated+" generated, "+shipsDisplayed+" displayed");
 		} else if (a.getSource() == refreshButton) {
 			for (ShipComponent component : activeComponentArrayList) {
 				component.save();
 			}
+            constraints.save();
 			long numOfShips = 1;
 			for (ShipComponent component : activeComponentArrayList) {
                 numOfShips *= component.getTimes();
@@ -225,11 +232,13 @@ public class AuroraTools extends JFrame implements ActionListener {
 	 */
 	public void generateShip(ArrayList<Parameter> parameterArrayList) {
 		Ship ship = new Ship();
-        for (ShipComponent component : components) {
+        for (ShipComponent component : activeComponentArrayList) {
             component.updateShip(ship);
         }
 		shipsGenerated++;
-//		if (ship.mass<settings.mass[0]||ship.mass>settings.mass[1]) return;
+
+        if (!constraints.passable(ship)) return;
+
 //		if (ship.distance<settings.distance[0]||ship.distance>settings.distance[1]) return;
 //		if (ship.magazineCapacity<settings.ammoCapacity[0]||ship.magazineCapacity>settings.ammoCapacity[1]) return;
 //		if (ship.velocity<settings.velocity[0]||ship.velocity>settings.velocity[1]) return;

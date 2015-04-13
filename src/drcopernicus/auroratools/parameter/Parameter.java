@@ -37,6 +37,14 @@ public class Parameter {
         return choices[current].doubleValue();
     }
 
+    public double getMin() {
+        return choices[min].doubleValue();
+    }
+
+    public double getMax() {
+        return choices[max].doubleValue();
+    }
+
     public void reset() {
         current = min-1;
     }
