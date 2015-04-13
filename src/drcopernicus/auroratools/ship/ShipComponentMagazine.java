@@ -14,7 +14,7 @@ public class ShipComponentMagazine extends ShipComponent {
 
     @Override
     public Parameter[] getParameters() {
-        return new Parameter[0];
+        return new Parameter[]{count};
     }
 
     @Override

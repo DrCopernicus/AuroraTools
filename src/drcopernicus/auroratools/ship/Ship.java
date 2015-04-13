@@ -67,10 +67,6 @@ public class Ship {
 //		mass += s.numberOfMaintStorage.current * 5 + s.numberOfEngineerSpaces.current;
 //		crew += s.numberOfMaintStorage.current * 2 + s.numberOfEngineerSpaces.current * 5;
 //		buildPoints += s.numberOfMaintStorage.current * 15 + s.numberOfEngineerSpaces.current * 10;
-//		//bridge
-//		mass += s.numberOfBridges.current;
-//		crew += s.numberOfBridges.current * 5;
-//		buildPoints += s.numberOfBridges.current * 10;
 //		//armor
 //		//this algorithm is accurate up to ~20 for small ships (800 HS), and only varies from the actual value for larger ships by less than 1 HS (in most cases)
 //		double ar = 0;
@@ -109,7 +105,7 @@ public class Ship {
     public void calculateEngine() {
         velocity = 1000 * rawEP/mass;
 		distance = velocity * fuelReserves * 3.6 / (rawEP * fuelUse) / 1000;
-//		daysOfFuel = s.fuelReserves.current / (rawEP * fuelUse) * (125.0/3.0);
+		daysOfFuel = fuelReserves / (rawEP * fuelUse) * (125.0/3.0);
     }
 
     public void calculateMaintenance() {
@@ -130,14 +126,14 @@ public class Ship {
 		//TOP BAR
 		String r = "shipName class shipClass" + "\t" + ((int)Math.ceil(mass) * 50) + " tons\t" + crew + " Crew\t" + df.format(buildPoints) + " BP\n";
 		//SECOND BAR
-//		r += (int)(velocity) + " km/s\tArmor " + (int)s.armorRating.current + "-" + (int)armorWidth + "\n";
+		r += (int)(velocity) + " km/s\tArmor " + (int)armorRating + "-" + (int)armorWidth + "\n";
 		//MAINT BAR
 		r += "MSP " + (int)mSP + "\tAFR " + (int)(annualFailureRate*100) + "%\tIFR " + df.format(annualFailureRate/0.72) + "%\n";
 		//DEPLOYMENT BAR
 //		r += "Intended Deployment Time: " + s.deploymentTime.current + " months\n";
 		//MAGAZINE BAR
 		if (magazineCapacity > 0) r += "Magazine " + (int)magazineCapacity + "\n";
-        if (cargoCapacity > 0) r += "Cargo Capacity " + cargoCapacity + "\n";
+        if (cargoCapacity > 0) r += "Cargo Capacity " + cargoCapacity * 50 + "\n";
 
 		r += "\n";
 

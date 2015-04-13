@@ -22,8 +22,9 @@ public class ShipComponentCargoHold extends ShipComponent {
     @Override
     public void updateShip(Ship ship) {
         ship.mass += size.getValue() * count.getValue();
-        ship.crew += 1 * count.getValue();
-        ship.cargoCapacity += 50 * size.getValue() * count.getValue();
+        ship.crew += ((int)size.getValue()==100 ? 2 : 5) * count.getValue();
+        ship.buildPoints += ((int)size.getValue()==100 ? 12 : 50) * count.getValue();
+        ship.cargoCapacity += size.getValue() * count.getValue();
     }
 
     @Override
