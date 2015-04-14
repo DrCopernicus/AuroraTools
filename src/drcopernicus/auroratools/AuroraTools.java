@@ -3,8 +3,7 @@ package drcopernicus.auroratools;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.ship.*;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -34,7 +33,8 @@ public class AuroraTools extends JFrame implements ActionListener {
 	private static final int MAX_SHIPS_DISPLAYED = 1000;
 	private Ship[] shipsToDisplay;
 	private int displayThisShip;
-	
+
+	private JPanel littleButtonPanel;
 	private JPanel megaPanel;
 	
 	public AuroraTools() {
@@ -46,8 +46,8 @@ public class AuroraTools extends JFrame implements ActionListener {
                 new ShipComponentEngine(),
                 new ShipComponentEngineeringSpaces(),
                 new ShipComponentFuelStorage(),
-                new ShipComponentGravSensor(),
-                new ShipComponentGeoSensor()};
+				new ShipComponentGeoSensor(),
+                new ShipComponentGravSensor()};
 
         constraints = new ShipConstraint();
 
@@ -98,10 +98,11 @@ public class AuroraTools extends JFrame implements ActionListener {
 		shipsGeneratedLabel = new JLabel("0 generated, 0 displayed");
 		refreshButton.addActionListener(this);
 		generateButton.addActionListener(this);
-		JPanel littleButtonPanel = new JPanel();
+		littleButtonPanel = new JPanel();
 		littleButtonPanel.add(refreshButton);
 		littleButtonPanel.add(generateButton);
 		littleButtonPanel.add(shipsGeneratedLabel);
+		littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 		megaPanel.add(littleButtonPanel);
 		this.add(megaPanel);
 		this.pack();
@@ -128,7 +129,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 
         JScrollPane availableComponentsScroll = new JScrollPane(availableComponentsPanel);
         availableComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
         componentPanel.add(activeComponentsScroll);
         componentPanel.add(availableComponentsScroll);
 
@@ -136,7 +136,8 @@ public class AuroraTools extends JFrame implements ActionListener {
     }
 
     private void makeActiveComponentsPanel() {
-        activeComponentsPanel = new JPanel(new GridLayout(0,1));
+        activeComponentsPanel = new JPanel();
+		activeComponentsPanel.setLayout(new BoxLayout(activeComponentsPanel, BoxLayout.PAGE_AXIS));
         activeComponentsScroll.getViewport().add(activeComponentsPanel);
         for (ShipComponent component : activeComponentArrayList) {
             activeComponentsPanel.add(component.getPanel());
@@ -161,6 +162,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 				component.updateText();
 			}
 			shipsGeneratedLabel.setText(shipsGenerated+" generated, "+shipsDisplayed+" displayed");
+			littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 		} else if (a.getSource() == refreshButton) {
 			for (ShipComponent component : activeComponentArrayList) {
 				component.save();
@@ -171,6 +173,7 @@ public class AuroraTools extends JFrame implements ActionListener {
                 numOfShips *= component.getTimes();
             }
 			generateButton.setText("Generate " + numOfShips + " ships!");
+			littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 			megaPanel.updateUI();
 		} else if (a.getSource() == addComponentButton) {
             activeComponentArrayList.add(components[availableComponents.getSelectedIndex()].makeNew());

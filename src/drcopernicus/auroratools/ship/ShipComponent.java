@@ -50,6 +50,7 @@ public abstract class ShipComponent {
             jPanel.add(componentPanel);
             componentPanel.setBorder(BorderFactory.createEtchedBorder());
         }
+        jPanel.setMaximumSize(jPanel.getPreferredSize());
         return jPanel;
     }
     public abstract void updateShip(Ship ship);
