@@ -108,9 +108,10 @@ public class Ship {
     private boolean calculateEngine(ShipConstraint sc) {
         if (numberOfEngines == 0) {
             velocity = 1;
+            if (!insideRange(velocity, sc.velocity)) return false;
         } else {
             velocity = 1000.0 * (rawEP/mass);
-            if (!insideRange(velocity, sc.velocity, 1000)) return false;
+            if (!insideRange(velocity, sc.velocity)) return false;
 
             distance = velocity * fuelReserves * 3.6 / (rawEP * fuelUse) / 1000;
             daysOfFuel = fuelReserves / (rawEP * fuelUse) * (125.0/3.0);
@@ -133,12 +134,12 @@ public class Ship {
     }
 
     private boolean otherConstraints(ShipConstraint sc) {
-        return (insideRange(mass, sc.mass, 10)
-                &&insideRange(cargoCapacity, sc.cargoCapacity, 1));
+        return (insideRange(mass, sc.mass)
+                &&insideRange(cargoCapacity, sc.cargoCapacity));
     }
 
-    private boolean insideRange(double constrained, VariableSetting range, double rangeMult) {
-        return constrained>=range.getMin()*rangeMult&&constrained<=range.getMax()*rangeMult;
+    private boolean insideRange(double constrained, VariableSetting range) {
+        return constrained>=range.getMin()&&constrained<=range.getMax();
     }
 
 	public String toString() {

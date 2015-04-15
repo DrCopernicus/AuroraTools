@@ -1,19 +1,18 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
-import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ConstraintCustomInput;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipConstraint extends ShipComponent {
-    public Parameter mass;
-    public Parameter cargoCapacity;
-    public Parameter velocity;
+    public ConstraintCustomInput mass;
+    public ConstraintCustomInput cargoCapacity;
+    public ConstraintCustomInput velocity;
 
     public ShipConstraint() {
         super("Ship Constraints");
-        mass = ParameterBuilder.integerRangeParameter("Mass (10HS)", 0, 50);
-        cargoCapacity = ParameterBuilder.integerRangeParameter("Cargo Capacity (HS)", 0, 50);
-        velocity = ParameterBuilder.integerRangeParameter("Velocity (Mm/s)", 0, 50);
+        mass = new ConstraintCustomInput("Mass (tons)",0,10000);
+        cargoCapacity = new ConstraintCustomInput("Cargo Capacity (tons)",0,1000000);
+        velocity = new ConstraintCustomInput("Velocity (km/s)",0,1000000);
     }
 
     @Override
