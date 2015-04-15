@@ -2,6 +2,7 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentGeoSensor extends ShipComponent{
     private Parameter count;
@@ -14,8 +15,8 @@ public class ShipComponentGeoSensor extends ShipComponent{
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{count, techRank};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{count, techRank};
     }
 
     @Override

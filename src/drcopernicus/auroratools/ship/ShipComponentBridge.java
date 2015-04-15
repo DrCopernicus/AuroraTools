@@ -2,6 +2,7 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentBridge extends ShipComponent {
     private Parameter count;
@@ -12,8 +13,8 @@ public class ShipComponentBridge extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{count};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{count};
     }
 
     @Override

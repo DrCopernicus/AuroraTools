@@ -1,6 +1,6 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 import java.text.DecimalFormat;
 
@@ -137,7 +137,7 @@ public class Ship {
                 &&insideRange(cargoCapacity, sc.cargoCapacity, 1));
     }
 
-    private boolean insideRange(double constrained, Parameter range, double rangeMult) {
+    private boolean insideRange(double constrained, VariableSetting range, double rangeMult) {
         return constrained>=range.getMin()*rangeMult&&constrained<=range.getMax()*rangeMult;
     }
 

@@ -1,6 +1,7 @@
 package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,7 +19,7 @@ public abstract class ShipComponent {
     public abstract ShipComponent makeNew();
 
     public final void save() {
-        for (Parameter parameter : getParameters()) {
+        for (VariableSetting parameter : getParameters()) {
             parameter.save();
         }
         updateText();
@@ -30,13 +31,13 @@ public abstract class ShipComponent {
 
     public final int getTimes() {
         int times = 1;
-        for (Parameter parameter : getParameters()) {
+        for (VariableSetting parameter : getParameters()) {
             times *= parameter.getTimes();
         }
         return times;
     }
 
-    public abstract Parameter[] getParameters();
+    public abstract VariableSetting[] getParameters();
 
     public final JPanel getPanel() {
         if (jPanel == null) {
@@ -54,7 +55,7 @@ public abstract class ShipComponent {
             componentPanel.setLayout(new GridBagLayout());
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.anchor = GridBagConstraints.WEST;
-            for (Parameter parameter : getParameters()) {
+            for (VariableSetting parameter : getParameters()) {
                 gbc.gridy++;
                 componentPanel.add(parameter.getPanel(), gbc);
             }

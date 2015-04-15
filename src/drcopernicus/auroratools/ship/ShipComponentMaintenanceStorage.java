@@ -1,6 +1,7 @@
 package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentMaintenanceStorage extends ShipComponent {
     public ShipComponentMaintenanceStorage() {
@@ -8,8 +9,8 @@ public class ShipComponentMaintenanceStorage extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[0];
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[0];
     }
 
     @Override

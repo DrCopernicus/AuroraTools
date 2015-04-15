@@ -3,6 +3,7 @@ package drcopernicus.auroratools.ship;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
 import drcopernicus.auroratools.parameter.ParameterWithDescriptions;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentEngine extends ShipComponent {
     private Parameter count;
@@ -26,8 +27,8 @@ public class ShipComponentEngine extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{count, engineSize, enginePower, powerMod, fuelEfficiency};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{count, engineSize, enginePower, powerMod, fuelEfficiency};
     }
 
     @Override

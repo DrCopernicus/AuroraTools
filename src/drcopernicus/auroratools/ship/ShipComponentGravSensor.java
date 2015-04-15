@@ -2,6 +2,7 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 import javax.swing.*;
 
@@ -16,8 +17,8 @@ public class ShipComponentGravSensor extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{count, techRank};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{count, techRank};
     }
 
     @Override

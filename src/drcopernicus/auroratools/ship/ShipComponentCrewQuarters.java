@@ -2,17 +2,19 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ParameterCustomInput;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentCrewQuarters extends ShipComponent {
-    private Parameter months;
+    private ParameterCustomInput months;
 
     public ShipComponentCrewQuarters() {
         super("Crew Quarters");
-        months = ParameterBuilder.integerRangeParameter("Crew Deployment Time", 3, 50);
+        months = new ParameterCustomInput("Crew Deployment Time",3.0,27.0,6.0);
     }
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{months};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{months};
     }
 
     @Override

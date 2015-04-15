@@ -22,8 +22,8 @@ public class ParameterWithDescriptions extends Parameter {
             gbc.weightx = 1;
             nameLabel = new JLabel(name);
             minField = new JComboBox(choicesString);
-            minField.setSelectedIndex(min);
             minField.setPrototypeDisplayValue("hello world long value");
+            minField.setSelectedIndex(min);
             maxField = new JComboBox(choicesString);
             maxField.setPrototypeDisplayValue("hello world long value");
             maxField.setSelectedIndex(max);

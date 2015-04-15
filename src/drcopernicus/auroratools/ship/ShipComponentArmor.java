@@ -1,8 +1,10 @@
 package drcopernicus.auroratools.ship;
 
+import com.sun.org.apache.xpath.internal.operations.Variable;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
 import drcopernicus.auroratools.parameter.ParameterWithDescriptions;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentArmor extends ShipComponent {
     private Parameter armorRating;
@@ -18,8 +20,8 @@ public class ShipComponentArmor extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{armorRating};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{armorRating};
     }
 
     @Override

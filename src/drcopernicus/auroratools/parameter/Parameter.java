@@ -3,34 +3,21 @@ package drcopernicus.auroratools.parameter;
 import javax.swing.*;
 import java.awt.*;
 
-public class Parameter {
-    protected String name;
+public class Parameter extends VariableSetting {
     protected Number[] choices;
-    protected int current;
-    protected int min;
-    protected int max;
 
-    protected JPanel jPanel;
-    protected JLabel nameLabel;
     protected JComboBox minField;
     protected JComboBox maxField;
 
     public Parameter(String name, Number[] choices) {
-        this.name = name;
+        super(name, choices.length-1);
         this.choices = choices;
-        this.min = 0;
-        this.max = choices.length-1;
-        current = min;
     }
 
     public void save() {
         min = minField.getSelectedIndex();
         max = maxField.getSelectedIndex();
         updateText();
-    }
-
-    public void updateText() {
-        nameLabel.setText(name+" ("+getTimes()+"x)");
     }
 
     public double getValue() {
@@ -43,23 +30,6 @@ public class Parameter {
 
     public double getMax() {
         return choices[max].doubleValue();
-    }
-
-    public void reset() {
-        current = min-1;
-    }
-
-    public void advance() {
-        if (current >= max) return;
-        current++;
-    }
-
-    /**
-     * Number of choices
-     * @return
-     */
-    public int getTimes() {
-        return max-min+1;
     }
 
     public JPanel getPanel() {

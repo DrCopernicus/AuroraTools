@@ -2,6 +2,7 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipConstraint extends ShipComponent {
     public Parameter mass;
@@ -16,8 +17,8 @@ public class ShipConstraint extends ShipComponent {
     }
 
     @Override
-    public Parameter[] getParameters() {
-        return new Parameter[]{mass,cargoCapacity,velocity};
+    public VariableSetting[] getParameters() {
+        return new VariableSetting[]{mass,cargoCapacity,velocity};
     }
 
     @Override

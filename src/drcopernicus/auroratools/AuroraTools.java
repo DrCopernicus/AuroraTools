@@ -1,6 +1,7 @@
 package drcopernicus.auroratools;
 
-import drcopernicus.auroratools.parameter.Parameter;
+//import drcopernicus.auroratools.parameter.Parameter;
+import drcopernicus.auroratools.parameter.VariableSetting;
 import drcopernicus.auroratools.ship.*;
 
 import javax.swing.*;
@@ -182,16 +183,16 @@ public class AuroraTools extends JFrame implements ActionListener {
 	}
 
     public void generate() {
-        ArrayList<Parameter> parameterArrayList = new ArrayList<Parameter>();
+        ArrayList<VariableSetting> parameterArrayList = new ArrayList<VariableSetting>();
         for (ShipComponent component : activeComponentArrayList) {
-            for (Parameter parameter : component.getParameters()) {
+            for (VariableSetting parameter : component.getParameters()) {
                 parameterArrayList.add(parameter);
             }
         }
         generateASetting(parameterArrayList,0);
     }
 
-	public void generateASetting(ArrayList<Parameter> parameterArrayList, int settingsNumber) {
+	public void generateASetting(ArrayList<VariableSetting> parameterArrayList, int settingsNumber) {
 		for (int j = 0; j < parameterArrayList.get(settingsNumber).getTimes(); j++) {
             parameterArrayList.get(settingsNumber).advance();
 			if (settingsNumber < parameterArrayList.size()-1) {
