@@ -8,7 +8,7 @@ public class ShipComponentMagazine extends ShipComponent {
 
     public ShipComponentMagazine() {
         super("Magazine");
-        count = ParameterBuilder.integerRangeParameter("Count", 1, 50);
+        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
 
     }
 

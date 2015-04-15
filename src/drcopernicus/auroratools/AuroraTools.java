@@ -27,7 +27,7 @@ public class AuroraTools extends JFrame implements ActionListener {
     private JList<ShipComponent> availableComponents;
 	private int shipsDisplayed;
 	private int shipsGenerated;
-	private Ship[] shipsToDisplay;
+	private String[] shipsToDisplay;
 	private int displayThisShip;
 
 	private JPanel littleButtonPanel;
@@ -148,7 +148,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			System.out.println("GENERATING SHIPS");
 			shipsDisplayed = 0;
 			shipsGenerated = 0;
-			shipsToDisplay = new Ship[MAX_SHIPS_DISPLAYED];
+			shipsToDisplay = new String[MAX_SHIPS_DISPLAYED];
 			displayThisShip = 0;
             generate();
 			updateDisplayShipField();
@@ -228,6 +228,7 @@ public class AuroraTools extends JFrame implements ActionListener {
         for (ShipComponent component : activeComponentArrayList) {
             component.updateShip(ship);
         }
+        ship.calculate();
 		shipsGenerated++;
 
         if (!constraints.passable(ship)) return;
@@ -238,13 +239,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 //		if (ship.buildTime<settings.buildTime[0]||ship.buildTime>settings.buildTime[1]) return;
 //		if (ship.annualFailureRate<settings.annualFailureRate[0]||ship.annualFailureRate>settings.annualFailureRate[1]) return;
 //		if (ship.commercial && !settings.commercial[0]) return;
-		shipsToDisplay[shipsDisplayed] = ship;
+		shipsToDisplay[shipsDisplayed] = ship.toString();
 		shipsDisplayed++;
-		
-		//record data for number of possible ships within certain parameters
-		//useful for removing excess calculations that don't actually result in ships
-//		for (int i = 0; i < settings.listOfSettings.length; i++) {
-//			settings.listOfSettings[i].values[settings.listOfSettings[i].count]++;
-//		}
 	}
 }

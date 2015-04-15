@@ -37,4 +37,8 @@ public class ParameterWithDescriptions extends Parameter {
         }
         return jPanel;
     }
+
+    public String getString() {
+        return choicesString[current];
+    }
 }

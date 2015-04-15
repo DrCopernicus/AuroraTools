@@ -7,13 +7,13 @@ import drcopernicus.auroratools.parameter.ParameterWithDescriptions;
 public class ShipComponentEngine extends ShipComponent {
     private Parameter count;
     private Parameter engineSize;
-    private Parameter enginePower;
+    private ParameterWithDescriptions enginePower;
     private Parameter powerMod;
     private Parameter fuelEfficiency;
 
     public ShipComponentEngine() {
         super("Engine");
-        count = ParameterBuilder.integerRangeParameter("Count",1,50);
+        count = ParameterBuilder.integerRangeParameter("Count",0,50);
         engineSize = ParameterBuilder.integerRangeParameter("Engine Size",1,50);
         enginePower = new ParameterWithDescriptions("Engine Power",
                 new Double[]{1.0,5.0,8.0,12.0,16.0,20.0,25.0,32.0,40.0,50.0,60.0,80.0,100.0},
@@ -37,7 +37,9 @@ public class ShipComponentEngine extends ShipComponent {
         ship.crew += (int)(engineSize.getValue() * count.getValue() * powerMod.getValue());
         ship.mass += engineSize.getValue() * count.getValue();
         ship.buildPoints += (enginePower.getValue() * count.getValue() * engineSize.getValue())/2; //not accurate, needs thermal calculations
-        ship.commercial = (powerMod.getValue() <= 0.5 && engineSize.getValue() >= 25) || ship.commercial;
+        boolean commercial = (powerMod.getValue() <= 0.5 && engineSize.getValue() >= 25);
+        ship.commercial = (commercial || ship.commercial);
+        ship.engineTitle = (commercial ? "Commercial " : "Military ") + enginePower.getString() + " Engine";
     }
 
     @Override

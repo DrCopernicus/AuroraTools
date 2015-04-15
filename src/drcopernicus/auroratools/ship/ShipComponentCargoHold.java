@@ -10,7 +10,7 @@ public class ShipComponentCargoHold extends ShipComponent {
 
     public ShipComponentCargoHold() {
         super("Cargo Hold");
-        count = ParameterBuilder.integerRangeParameter("Count", 1, 50);
+        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
         size = new ParameterWithDescriptions("Size",new Integer[]{100,500},new String[]{"Small","Standard"});
     }
 

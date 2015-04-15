@@ -12,10 +12,6 @@ public class Settings {
 //	public VariableSetting techBaseBuildRate = new VariableTech(560, 560, 1, new double[]{500,560,750,1000,1300,1600,2100,2750,3500,4600,6000,8000});
 //	public VariableSetting techGeoSensorRank = new VariableTech(1, 1, 1, new double[]{1,2,3,5});
 //	public VariableSetting techGravSensorRank = new VariableTech(1, 1, 1, new double[]{1,2,3,5});
-//	//conventional 2, duranium 5, high density duranium 6, composite 8, ceramic composite 10, laminate composite 12
-//	//compressed carbon 15, biphase carbon 18, crystalline composite 21, superdense 25, bonded superdense 30
-//	//coherent superdense 36, collapsium 45
-//	public VariableSetting techArmorWeight = new VariableTech(8, 8, 1, new double[]{2,5,6,8,10,12,15,18,21,25,30,45});
 //
 //	public boolean[] commercial = new boolean[1];
 //
@@ -38,14 +34,6 @@ public class Settings {
 //	public VariableSetting numberOfEngines = new VariableParameter(1, 3, 1);
 //	public VariableSetting enginePowerMod = new VariableParameter(0.1, 3.0, 0.05);
 //	public VariableSetting fuelReserves = new VariableParameter(500, 5000, 500);
-//
-//	public VariableSetting[] listOfSettings = new VariableSetting[]{
-//			techFeedEfficiency, techMagazineEjection, techEnginePower, techFuelConsumption,
-//			techBaseBuildRate, techGeoSensorRank, techGravSensorRank, techArmorWeight,
-//			armorRating, deploymentTime, gravSurveyPoints, geoSurveyPoints,
-//			numberOfBridges, numberOfMaintStorage, numberOfEngineerSpaces, magazineNumber,
-//			magazineSize, magazineHTK, engineSize, numberOfEngines,
-//			fuelReserves, enginePowerMod};
 //
 //	//Dependent variables
 //	public double[] velocity = new double[2];

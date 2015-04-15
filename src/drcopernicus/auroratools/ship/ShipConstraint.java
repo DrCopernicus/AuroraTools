@@ -9,7 +9,7 @@ public class ShipConstraint extends ShipComponent {
 
     public ShipConstraint() {
         super("Ship Constraints");
-        mass = ParameterBuilder.integerRangeParameter("Mass (HS)", 1, 50);
+        mass = ParameterBuilder.integerRangeParameter("Mass (HS/10)", 0, 50);
         cargoCapacity = ParameterBuilder.integerRangeParameter("Cargo Capacity (HS)", 0, 50);
     }
 
@@ -29,7 +29,7 @@ public class ShipConstraint extends ShipComponent {
     }
 
     public boolean passable(Ship ship) {
-        return (ship.mass>=mass.getMin()&&ship.mass<=mass.getMax())
+        return (ship.mass>=mass.getMin()*10&&ship.mass<=mass.getMax()*10)
                 &&(ship.cargoCapacity>=cargoCapacity.getMin()&&ship.mass<=cargoCapacity.getMax());
     }
 }

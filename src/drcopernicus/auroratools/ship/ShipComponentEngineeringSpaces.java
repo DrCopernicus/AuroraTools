@@ -8,7 +8,7 @@ public class ShipComponentEngineeringSpaces extends ShipComponent {
 
     public ShipComponentEngineeringSpaces() {
         super("Engineering Spaces");
-        count = ParameterBuilder.integerRangeParameter("Count", 1, 50);
+        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
     }
 
     @Override

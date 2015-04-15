@@ -9,7 +9,7 @@ public class ShipComponentGeoSensor extends ShipComponent{
 
     public ShipComponentGeoSensor() {
         super("Geo Sensor");
-        count = ParameterBuilder.integerRangeParameter("Count",1,50);
+        count = ParameterBuilder.integerRangeParameter("Count",0,50);
         techRank = new Parameter("Tech Level", new Integer[]{1,2,3,5});
     }
 

@@ -9,7 +9,7 @@ public class ShipComponentFuelStorage extends ShipComponent {
 
     public ShipComponentFuelStorage() {
         super("Fuel Storage");
-        count = ParameterBuilder.integerRangeParameter("Count", 1, 50);
+        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
         size = new Parameter("Size",new Integer[]{5,10,50,250,1000,5000});
     }
 
