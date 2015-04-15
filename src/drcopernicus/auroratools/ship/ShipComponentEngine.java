@@ -32,6 +32,7 @@ public class ShipComponentEngine extends ShipComponent {
 
     @Override
     public void updateShip(Ship ship) {
+        ship.numberOfEngines += count.getValue();
         ship.rawEP += enginePower.getValue() * count.getValue() * engineSize.getValue();
         ship.fuelUse += fuelEfficiency.getValue() * (1 - engineSize.getValue() * 0.01) * Math.pow(powerMod.getValue(), 2.5);
         ship.crew += (int)(engineSize.getValue() * count.getValue() * powerMod.getValue());

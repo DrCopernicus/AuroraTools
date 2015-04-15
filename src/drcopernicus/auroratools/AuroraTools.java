@@ -35,10 +35,8 @@ public class AuroraTools extends JFrame implements ActionListener {
 	
 	public AuroraTools() {
         components = new ShipComponent[]{
-                new ShipComponentArmor(),
                 new ShipComponentBridge(),
                 new ShipComponentCargoHold(),
-                new ShipComponentCrewQuarters(),
                 new ShipComponentEngine(),
                 new ShipComponentEngineeringSpaces(),
                 new ShipComponentFuelStorage(),
@@ -48,13 +46,13 @@ public class AuroraTools extends JFrame implements ActionListener {
         constraints = new ShipConstraint();
 
         activeComponentArrayList = new ArrayList<ShipComponent>();
+        activeComponentArrayList.add(new ShipComponentArmor());
+        activeComponentArrayList.add(new ShipComponentCrewQuarters());
 
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
-		JPanel techPanel = new JPanel(new GridLayout(0,1));
 		JPanel componentPanel = makeComponentPanel();
-		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
-        reqsPanel.add(constraints.getPanel());
+		JPanel reqsPanel = constraints.getPanel();
 		JPanel dispPanel = new JPanel();
 		JPanel dispSuperButtons = new JPanel();
 		JPanel dispButtons = new JPanel();
@@ -70,22 +68,11 @@ public class AuroraTools extends JFrame implements ActionListener {
 		dispSuperButtons.add(dispButtons);
 		dispPanel.add(dispSuperButtons);
 		dispPanel.add(displayShipField,BorderLayout.CENTER);
-		JTabbedPane tabbedTechPane = new JTabbedPane();
-		//adding individual tech panels to the parent tech panel, for organizational purposes
-		techPanel.add(tabbedTechPane);
-//		tabbedTechPane.addTab("Biology / Genetics", techBioPanel);
-//		tabbedTechPane.addTab("Construction / Production", techConPanel);
-//		tabbedTechPane.addTab("Defensive Systems", techDefPanel);
-//		tabbedTechPane.addTab("Energy Weapons", techEnePanel);
-//		tabbedTechPane.addTab("Logistics / Ground Combat", techLogPanel);
-//		tabbedTechPane.addTab("Missiles / Kinetic Weapons", techMisPanel);
-//		tabbedTechPane.addTab("Power and Propulsion", techPowPanel);
-//		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
+
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Spec", componentPanel);
 		tabbedPane.addTab("Reqs", reqsPanel);
 		tabbedPane.addTab("Disp", dispPanel);
-		
 		megaPanel.add(tabbedPane);
 
 		refreshButton = new JButton("Refresh");
@@ -228,17 +215,9 @@ public class AuroraTools extends JFrame implements ActionListener {
         for (ShipComponent component : activeComponentArrayList) {
             component.updateShip(ship);
         }
-        ship.calculate();
-		shipsGenerated++;
+        shipsGenerated++;
+        if (!ship.calculate(constraints)) return;
 
-        if (!constraints.passable(ship)) return;
-
-//		if (ship.distance<settings.distance[0]||ship.distance>settings.distance[1]) return;
-//		if (ship.magazineCapacity<settings.ammoCapacity[0]||ship.magazineCapacity>settings.ammoCapacity[1]) return;
-//		if (ship.velocity<settings.velocity[0]||ship.velocity>settings.velocity[1]) return;
-//		if (ship.buildTime<settings.buildTime[0]||ship.buildTime>settings.buildTime[1]) return;
-//		if (ship.annualFailureRate<settings.annualFailureRate[0]||ship.annualFailureRate>settings.annualFailureRate[1]) return;
-//		if (ship.commercial && !settings.commercial[0]) return;
 		shipsToDisplay[shipsDisplayed] = ship.toString();
 		shipsDisplayed++;
 	}

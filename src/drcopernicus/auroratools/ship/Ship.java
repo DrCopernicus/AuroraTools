@@ -1,7 +1,6 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.AuroraTools;
-import drcopernicus.auroratools.Settings;
+import drcopernicus.auroratools.parameter.Parameter;
 
 import java.text.DecimalFormat;
 
@@ -54,16 +53,12 @@ public class Ship {
         commercial = false;
 	}
 	
-	public void calculate() {
-//
+	public boolean calculate(ShipConstraint shipConstraint) {
 //		//MASS, CREW, AND BUILD POINT CALCULATIONS ===========================
 //		//magazine
 //		mass += s.magazineSize.current*s.magazineNumber.current;
 //		buildPoints += 1; //this formula is yet to be determined, and seems to be even more unpredictable than all other formulae!
 //		crew += s.magazineNumber.current*(int)(0.5+0.5*s.magazineSize.current);
-//		//fuel tanks
-//		mass += s.fuelReserves.current / 50.0;
-//		buildPoints += s.fuelReserves.current / 25; //the cost actually changes based on the size of the component, so I based it off of ultra large tanks
 //		//maintenance and engineering spaces
 //		mass += s.numberOfMaintStorage.current * 5 + s.numberOfEngineerSpaces.current;
 //		crew += s.numberOfMaintStorage.current * 2 + s.numberOfEngineerSpaces.current * 5;
@@ -75,19 +70,22 @@ public class Ship {
 //		//BUILD TIME =========================================================
 //		buildTime = buildPoints / (s.techBaseBuildRate.current * (1+(((mass/100)-1)/2)));
 
-        calculateCrewQuarters();
-        calculateArmor();
-        calculateEngine();
-        calculateMaintenance();
+        return (calculateCrewQuarters()
+                && calculateArmor()
+                && calculateEngine(shipConstraint)
+                && calculateMaintenance()
+                && otherConstraints(shipConstraint));
 	}
 
-    private void calculateCrewQuarters() {
+    private boolean calculateCrewQuarters() {
         double reqCrewQuarters = Math.pow(deploymentTime,1/3)*crew/50.0;
         mass += Math.round(reqCrewQuarters*10)/10.0;
         buildPoints += Math.round(reqCrewQuarters*10);
+
+        return true;
     }
 
-    private void calculateArmor() {
+    private boolean calculateArmor() {
         //this algorithm is accurate up to ~20 for small ships (800 HS), and only varies from the actual value for larger ships by less than 1 HS (in most cases)
 		double ar;
 		double sbar;
@@ -103,17 +101,24 @@ public class Ship {
 		mass += aHS;
 		buildPoints += aHS * armorWeight;
 		armorWidth = asr;
+
+        return true;
     }
 
-    private void calculateEngine() {
-        System.out.println(mass);
+    private boolean calculateEngine(ShipConstraint sc) {
+        if (numberOfEngines == 0) {
+            velocity = 1;
+        } else {
+            velocity = 1000.0 * (rawEP/mass);
+            if (!insideRange(velocity, sc.velocity, 1000)) return false;
 
-        velocity = 1000.0 * (rawEP/mass);
-		distance = velocity * fuelReserves * 3.6 / (rawEP * fuelUse) / 1000;
-		daysOfFuel = fuelReserves / (rawEP * fuelUse) * (125.0/3.0);
+            distance = velocity * fuelReserves * 3.6 / (rawEP * fuelUse) / 1000;
+            daysOfFuel = fuelReserves / (rawEP * fuelUse) * (125.0/3.0);
+        }
+        return true;
     }
 
-    private void calculateMaintenance() {
+    private boolean calculateMaintenance() {
 //		//MAINTENANCE ========================================================
 //		if (s.numberOfEngineerSpaces.current == 0) {
 //			annualFailureRate = mass/20.0;
@@ -123,6 +128,17 @@ public class Ship {
 //			annualFailureRate = mass * mass / (s.numberOfEngineerSpaces.current * 5000);
 //		}
 //		mSP = buildPoints * (s.numberOfEngineerSpaces.current/mass)/0.08 + 1000 * s.numberOfMaintStorage.current;
+
+        return true;
+    }
+
+    private boolean otherConstraints(ShipConstraint sc) {
+        return (insideRange(mass, sc.mass, 10)
+                &&insideRange(cargoCapacity, sc.cargoCapacity, 1));
+    }
+
+    private boolean insideRange(double constrained, Parameter range, double rangeMult) {
+        return constrained>=range.getMin()*rangeMult&&constrained<=range.getMax()*rangeMult;
     }
 
 	public String toString() {
@@ -143,8 +159,11 @@ public class Ship {
 		r += "\n";
 
 		//ENGINE STATS
-		r += (int)(rawEP/(double)numberOfEngines) + "EP\t" + engineTitle + "(" + numberOfEngines + ")";
-		r += fuelReserves + " kL\t" + df.format(distance) + " Tm (" + (int)daysOfFuel + " days)\n";
+
+        if (numberOfEngines != 0) {
+            r += (int)(rawEP/(double)numberOfEngines) + "EP " + engineTitle + " (" + numberOfEngines + ")\tPower " + rawEP +"\n";
+        }
+        r += fuelReserves + " kL" + (numberOfEngines != 0 ? " " + df.format(distance) + " Tm (" + (int)daysOfFuel + " days)\n" : "");
 
 		r += "\n";
 
