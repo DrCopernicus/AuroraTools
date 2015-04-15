@@ -16,44 +16,57 @@ public abstract class ShipComponent {
     }
 
     public abstract ShipComponent makeNew();
+
     public final void save() {
         for (Parameter parameter : getParameters()) {
             parameter.save();
         }
         updateText();
     }
+
     public final void updateText() {
         nameLabel.setText(name+" ("+getTimes()+"x)");
     }
+
     public final int getTimes() {
         int times = 1;
         for (Parameter parameter : getParameters()) {
             times *= parameter.getTimes();
         }
         return times;
-    };
+    }
+
     public abstract Parameter[] getParameters();
+
     public final JPanel getPanel() {
         if (jPanel == null) {
-            jPanel = new JPanel();
-            componentPanel = new JPanel();
-            componentPanel.setLayout(new GridBagLayout());
             GridBagConstraints gbc = new GridBagConstraints();
-            gbc.fill = GridBagConstraints.HORIZONTAL;
+
+            jPanel = new JPanel();
+            jPanel.setLayout(new GridBagLayout());
+
+            gbc.fill = GridBagConstraints.VERTICAL;
             gbc.anchor = GridBagConstraints.WEST;
             nameLabel = new JLabel(name);
-            jPanel.add(nameLabel);
+            jPanel.add(nameLabel, gbc);
+
+            componentPanel = new JPanel();
+            componentPanel.setLayout(new GridBagLayout());
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+            gbc.anchor = GridBagConstraints.WEST;
             for (Parameter parameter : getParameters()) {
                 gbc.gridy++;
                 componentPanel.add(parameter.getPanel(), gbc);
             }
             jPanel.add(componentPanel);
+
             componentPanel.setBorder(BorderFactory.createEtchedBorder());
         }
-        jPanel.setMaximumSize(jPanel.getPreferredSize());
         return jPanel;
     }
+
     public abstract void updateShip(Ship ship);
+
     public String toString() {
         return name;
     }

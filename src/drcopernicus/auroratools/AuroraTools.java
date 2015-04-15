@@ -3,34 +3,30 @@ package drcopernicus.auroratools;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.ship.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.*;
-
 public class AuroraTools extends JFrame implements ActionListener {
+    private static final int MAX_SHIPS_DISPLAYED = 1000;
+    public JButton generateButton;
+    public JButton refreshButton;
+    public JButton dispForwardButton;
+    public JButton dispBackwardButton;
+    public JTextArea displayShipField;
+    public JLabel dispLabel;
+    public JButton addComponentButton;
+    public JLabel shipsGeneratedLabel;
     private ShipComponent[] components;
     private ShipConstraint constraints;
     private ArrayList<ShipComponent> activeComponentArrayList;
-
     private JPanel activeComponentsPanel;
     private JScrollPane activeComponentsScroll;
     private JList<ShipComponent> availableComponents;
-
-	public JButton generateButton;
-	public JButton refreshButton;
-	public JButton dispForwardButton;
-	public JButton dispBackwardButton;
-	public JTextArea displayShipField;
-	public JLabel dispLabel;
-    public JButton addComponentButton;
 	private int shipsDisplayed;
 	private int shipsGenerated;
-	public JLabel shipsGeneratedLabel;
-
-	private static final int MAX_SHIPS_DISPLAYED = 1000;
 	private Ship[] shipsToDisplay;
 	private int displayThisShip;
 
@@ -55,7 +51,6 @@ public class AuroraTools extends JFrame implements ActionListener {
 
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
-		JPanel flavPanel = new JPanel(new GridLayout(0,1));
 		JPanel techPanel = new JPanel(new GridLayout(0,1));
 		JPanel componentPanel = makeComponentPanel();
 		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
@@ -129,9 +124,9 @@ public class AuroraTools extends JFrame implements ActionListener {
 
         JScrollPane availableComponentsScroll = new JScrollPane(availableComponentsPanel);
         availableComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        componentPanel.add(activeComponentsScroll);
-        componentPanel.add(availableComponentsScroll);
 
+        JSplitPane availableComponentsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, availableComponentsScroll, activeComponentsScroll);
+        componentPanel.add(availableComponentsSplitPane);
         return componentPanel;
     }
 
@@ -209,12 +204,7 @@ public class AuroraTools extends JFrame implements ActionListener {
         generateASetting(parameterArrayList,0);
     }
 
-	/**
-	 * Changes one Settings value, and generates ships. Only generates ships up to MAX_SHIPS_DISPLAYED. Recursive function.
-	 * @param settingsNumber
-	 */
 	public void generateASetting(ArrayList<Parameter> parameterArrayList, int settingsNumber) {
-		//change the settings value settings.listOfSettings[i].number times.
 		for (int j = 0; j < parameterArrayList.get(settingsNumber).getTimes(); j++) {
             parameterArrayList.get(settingsNumber).advance();
 			if (settingsNumber < parameterArrayList.size()-1) {
@@ -223,7 +213,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 				if (shipsDisplayed >= MAX_SHIPS_DISPLAYED) {
 					break;
 				} else {
-					generateShip(parameterArrayList);
+                    generateShip();
 				}
 			}
 		}
@@ -233,7 +223,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 	/**
 	 * Generates an individual ship based off of Settings specifications. Adds the ship if it qualifies, otherwise ignores it.
 	 */
-	public void generateShip(ArrayList<Parameter> parameterArrayList) {
+    public void generateShip() {
 		Ship ship = new Ship();
         for (ShipComponent component : activeComponentArrayList) {
             component.updateShip(ship);
