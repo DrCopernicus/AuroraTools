@@ -8,8 +8,7 @@ public class Settings {
 	//Independent variables
 //	public VariableSetting techFeedEfficiency = new VariableTech(0.9, 0.9, 1, new double[]{0.75,0.8,0.85,0.9,0.92,0.94,0.96,0.98,0.99});
 //	public VariableSetting techMagazineEjection = new VariableTech(0.95, 0.95, 1, new double[]{0.7,0.8,0.85,0.9,0.93,0.95,0.97,0.98,0.99});
-//	public VariableSetting techEnginePower = new VariableTech(16, 16, 1, new double[]{5,8,12,16,20,25,32,40,50,60,80,100});
-//	public VariableSetting techFuelConsumption = new VariableTech(0.7, 0.7, 1, new double[]{1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.25,0.2,0.16,0.125,0.1});
+//	public VariableSetting techFuelConsumption = new VariableTech(0.7, 0.7, 1, new double[]{});
 //	public VariableSetting techBaseBuildRate = new VariableTech(560, 560, 1, new double[]{500,560,750,1000,1300,1600,2100,2750,3500,4600,6000,8000});
 //	public VariableSetting techGeoSensorRank = new VariableTech(1, 1, 1, new double[]{1,2,3,5});
 //	public VariableSetting techGravSensorRank = new VariableTech(1, 1, 1, new double[]{1,2,3,5});

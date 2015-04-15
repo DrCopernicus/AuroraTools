@@ -22,7 +22,7 @@ public class ShipComponentEngine extends ShipComponent {
                         "Solid Core Anti-matter","Gas Core Anti-matter","Plasma Core Anti-matter",
                         "Beam Core Anti-matter","Photonic Drive"});
         powerMod = new Parameter("Power Mod", new Double[]{0.1,1.0,3.0});
-        fuelEfficiency = new Parameter("Fuel Efficiency", new Integer[]{1,2,3,4,5});
+        fuelEfficiency = new Parameter("Fuel Efficiency", new Double[]{0.1,0.125,0.16,0.2,0.25,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0});
     }
 
     @Override
