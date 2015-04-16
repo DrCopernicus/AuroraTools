@@ -1,15 +1,15 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ParameterCustomInput;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentEngineeringSpaces extends ShipComponent {
-    private Parameter count;
+    private ParameterCustomInput count;
 
     public ShipComponentEngineeringSpaces() {
         super("Engineering Spaces");
-        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
+        count = ParameterBuilder.defaultCountParameter();
     }
 
     @Override

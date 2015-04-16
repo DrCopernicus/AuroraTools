@@ -53,11 +53,11 @@ public class ParameterCustomInput extends VariableSetting {
             gbc.weightx = 1;
             nameLabel = new JLabel(name);
 
-            minField = new JTextField(20);
+            minField = new JTextField(5);
             minField.setText(minVal+"");
-            maxField = new JTextField(20);
+            maxField = new JTextField(5);
             maxField.setText(maxVal + "");
-            spacingField = new JTextField(20);
+            spacingField = new JTextField(5);
             spacingField.setText(spacing+"");
 
             gbc.gridx++;

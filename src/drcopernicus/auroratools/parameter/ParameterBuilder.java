@@ -8,4 +8,8 @@ public class ParameterBuilder {
         }
         return new Parameter(name, range);
     }
+
+    public static ParameterCustomInput defaultCountParameter() {
+        return new ParameterCustomInput("Count",0.0,10.0,1.0);
+    }
 }

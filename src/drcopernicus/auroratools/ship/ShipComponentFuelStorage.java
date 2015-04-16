@@ -2,15 +2,16 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ParameterCustomInput;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentFuelStorage extends ShipComponent {
-    private Parameter count;
+    private ParameterCustomInput count;
     private Parameter size;
 
     public ShipComponentFuelStorage() {
         super("Fuel Storage");
-        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
+        count = ParameterBuilder.defaultCountParameter();
         size = new Parameter("Size",new Integer[]{5,10,50,250,1000,5000});
     }
 

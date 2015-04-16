@@ -47,9 +47,9 @@ public class ConstraintCustomInput extends VariableSetting {
             gbc.weightx = 1;
             nameLabel = new JLabel(name);
 
-            minField = new JTextField(20);
+            minField = new JTextField(10);
             minField.setText(minVal+"");
-            maxField = new JTextField(20);
+            maxField = new JTextField(10);
             maxField.setText(maxVal + "");
 
             gbc.gridx++;

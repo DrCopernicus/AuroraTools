@@ -1,15 +1,15 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ParameterCustomInput;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentBridge extends ShipComponent {
-    private Parameter count;
+    private ParameterCustomInput count;
 
     public ShipComponentBridge() {
         super("Bridge");
-        count = ParameterBuilder.integerRangeParameter("Count", 0, 50);
+        count = ParameterBuilder.defaultCountParameter();
     }
 
     @Override

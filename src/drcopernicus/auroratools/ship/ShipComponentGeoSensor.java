@@ -2,15 +2,16 @@ package drcopernicus.auroratools.ship;
 
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
+import drcopernicus.auroratools.parameter.ParameterCustomInput;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentGeoSensor extends ShipComponent{
-    private Parameter count;
+    private ParameterCustomInput count;
     private Parameter techRank;
 
     public ShipComponentGeoSensor() {
         super("Geo Sensor");
-        count = ParameterBuilder.integerRangeParameter("Count",0,50);
+        count = ParameterBuilder.defaultCountParameter();
         techRank = new Parameter("Tech Level", new Integer[]{1,2,3,5});
     }
 

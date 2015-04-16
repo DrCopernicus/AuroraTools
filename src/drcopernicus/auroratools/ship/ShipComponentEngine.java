@@ -1,12 +1,9 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
-import drcopernicus.auroratools.parameter.ParameterBuilder;
-import drcopernicus.auroratools.parameter.ParameterWithDescriptions;
-import drcopernicus.auroratools.parameter.VariableSetting;
+import drcopernicus.auroratools.parameter.*;
 
 public class ShipComponentEngine extends ShipComponent {
-    private Parameter count;
+    private ParameterCustomInput count;
     private Parameter engineSize;
     private ParameterWithDescriptions enginePower;
     private Parameter powerMod;
@@ -14,7 +11,7 @@ public class ShipComponentEngine extends ShipComponent {
 
     public ShipComponentEngine() {
         super("Engine");
-        count = ParameterBuilder.integerRangeParameter("Count",0,50);
+        count = ParameterBuilder.defaultCountParameter();
         engineSize = ParameterBuilder.integerRangeParameter("Engine Size",1,50);
         enginePower = new ParameterWithDescriptions("Engine Power",
                 new Double[]{1.0,5.0,8.0,12.0,16.0,20.0,25.0,32.0,40.0,50.0,60.0,80.0,100.0},

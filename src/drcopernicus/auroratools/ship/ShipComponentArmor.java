@@ -12,7 +12,7 @@ public class ShipComponentArmor extends ShipComponent {
 
     public ShipComponentArmor() {
         super("Armor");
-        armorRating = ParameterBuilder.integerRangeParameter("Armor Rating",1,50);
+        armorRating = ParameterBuilder.integerRangeParameter("Armor Rating",1,100);
         armorWeight = new ParameterWithDescriptions("Armor Weight",new Integer[]{2,5,6,8,10,12,15,18,21,25,30,36,45},
                 new String[]{"Conventional","Duranium","High Density Duranium","Composite","Ceramic Composite",
                 "Laminate Composite","Compressed Carbon","Biphase Carbon","Crystalline Composite","Superdense",
