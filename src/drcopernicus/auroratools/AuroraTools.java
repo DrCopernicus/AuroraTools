@@ -1,60 +1,59 @@
 package drcopernicus.auroratools;
 
+//import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.VariableSetting;
-import drcopernicus.auroratools.ship.Ship;
+import drcopernicus.auroratools.ship.*;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DecimalFormat;
-
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
+import java.util.ArrayList;
 
 public class AuroraTools extends JFrame implements ActionListener {
-	public static Settings settings;
-	public SpecialPanel[] components;
-	public JButton generateButton;
-	public JButton refreshButton;
-	public JButton dispForwardButton;
-	public JButton dispBackwardButton;
-	public JTextArea displayShipField;
-	public JLabel dispLabel;
+    private static final int MAX_SHIPS_DISPLAYED = 1000;
+    public JButton generateButton;
+    public JButton refreshButton;
+    public JButton dispForwardButton;
+    public JButton dispBackwardButton;
+    public JTextArea displayShipField;
+    public JLabel dispLabel;
+    public JButton addComponentButton;
+    public JLabel shipsGeneratedLabel;
+    private ShipComponent[] components;
+    private ShipConstraint constraints;
+    private ArrayList<ShipComponent> activeComponentArrayList;
+    private JPanel activeComponentsPanel;
+    private JScrollPane activeComponentsScroll;
+    private JList<ShipComponent> availableComponents;
 	private int shipsDisplayed;
 	private int shipsGenerated;
-	public JLabel shipsGeneratedLabel;
-	
-	private static final int MAX_SHIPS_DISPLAYED = 1000;
-	private Ship[] shipsToDisplay;
+	private String[] shipsToDisplay;
 	private int displayThisShip;
-	
+
+	private JPanel littleButtonPanel;
 	private JPanel megaPanel;
 	
 	public AuroraTools() {
+        components = new ShipComponent[]{
+                new ShipComponentBridge(),
+                new ShipComponentCargoHold(),
+                new ShipComponentEngine(),
+                new ShipComponentEngineeringSpaces(),
+                new ShipComponentFuelStorage(),
+				new ShipComponentGeoSensor(),
+                new ShipComponentGravSensor()};
+
+        constraints = new ShipConstraint();
+
+        activeComponentArrayList = new ArrayList<ShipComponent>();
+        activeComponentArrayList.add(new ShipComponentArmor());
+        activeComponentArrayList.add(new ShipComponentCrewQuarters());
+
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
-		JPanel flavPanel = new JPanel(new GridLayout(0,1));
-		JPanel techPanel = new JPanel(new GridLayout(0,1));
-		JPanel techBioPanel = new JPanel(new GridLayout(0,1));
-		JPanel techConPanel = new JPanel(new GridLayout(0,1));
-		JPanel techDefPanel = new JPanel(new GridLayout(0,1));
-		JPanel techEnePanel = new JPanel(new GridLayout(0,1));
-		JPanel techLogPanel = new JPanel(new GridLayout(0,1));
-		JPanel techMisPanel = new JPanel(new GridLayout(0,1));
-		JPanel techPowPanel = new JPanel(new GridLayout(0,1));
-		JPanel techSenPanel = new JPanel(new GridLayout(0,1));
-		JPanel specPanel = new JPanel(new GridLayout(0,1));
-		JPanel reqsPanel = new JPanel(new GridLayout(0,1));
+		JPanel componentPanel = makeComponentPanel();
+		JPanel reqsPanel = constraints.getPanel();
 		JPanel dispPanel = new JPanel();
 		JPanel dispSuperButtons = new JPanel();
 		JPanel dispButtons = new JPanel();
@@ -70,69 +69,23 @@ public class AuroraTools extends JFrame implements ActionListener {
 		dispSuperButtons.add(dispButtons);
 		dispPanel.add(dispSuperButtons);
 		dispPanel.add(displayShipField,BorderLayout.CENTER);
-		JTabbedPane tabbedTechPane = new JTabbedPane();
-		//adding individual tech panels to the parent tech panel, for organizational purposes
-		techPanel.add(tabbedTechPane);
-		tabbedTechPane.addTab("Biology / Genetics", techBioPanel);
-		tabbedTechPane.addTab("Construction / Production", techConPanel);
-		tabbedTechPane.addTab("Defensive Systems", techDefPanel);
-		tabbedTechPane.addTab("Energy Weapons", techEnePanel);
-		tabbedTechPane.addTab("Logistics / Ground Combat", techLogPanel);
-		tabbedTechPane.addTab("Missiles / Kinetic Weapons", techMisPanel);
-		tabbedTechPane.addTab("Power and Propulsion", techPowPanel);
-		tabbedTechPane.addTab("Sensors and Fire Control", techSenPanel);
+
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Flav", flavPanel);
-		tabbedPane.addTab("Tech", techPanel);
-		tabbedPane.addTab("Spec", specPanel);
+		tabbedPane.addTab("Spec", componentPanel);
 		tabbedPane.addTab("Reqs", reqsPanel);
 		tabbedPane.addTab("Disp", dispPanel);
-		
 		megaPanel.add(tabbedPane);
-		settings = new Settings();
-		//components array is used for more easily updating the data on them (tooltips, etc.)
-		components = new SpecialPanel[]{
-				new OneStringPanel("Name", settings.shipName, flavPanel),
-				new OneStringPanel("Class", settings.shipClass, flavPanel),
-				new ThreeDoublePanel("Magazine feed efficiency", settings.techFeedEfficiency, techMisPanel),
-				new ThreeDoublePanel("Magazine ejection", settings.techMagazineEjection, techMisPanel),
-				new ThreeDoublePanel("EP / HS", settings.techEnginePower, techPowPanel),
-				new ThreeDoublePanel("Build points per year per shipyard", settings.techBaseBuildRate, techConPanel),
-				new ThreeDoublePanel("Fuel consumption", settings.techFuelConsumption, techPowPanel),
-				new ThreeDoublePanel("Geo sensor rank", settings.techGeoSensorRank, techSenPanel),
-				new ThreeDoublePanel("Grav sensor rank", settings.techGravSensorRank, techSenPanel),
-				new ThreeDoublePanel("Armor strength / HS", settings.techArmorWeight, techDefPanel),
-				new ThreeDoublePanel("Deployment time (months)", settings.deploymentTime, specPanel),
-				new ThreeDoublePanel("Armor rating", settings.armorRating, specPanel),
-				new ThreeDoublePanel("Grav survey points", settings.gravSurveyPoints, specPanel),
-				new ThreeDoublePanel("Geo survey points", settings.geoSurveyPoints, specPanel),
-				new ThreeDoublePanel("Number of bridges", settings.numberOfBridges, specPanel),
-				new ThreeDoublePanel("Number of maintenance storage", settings.numberOfMaintStorage, specPanel),
-				new ThreeDoublePanel("Number of engineering spaces", settings.numberOfEngineerSpaces, specPanel),
-				new ThreeDoublePanel("Number of magazines", settings.magazineNumber, specPanel),
-				new ThreeDoublePanel("Magazine size", settings.magazineSize, specPanel),
-				new ThreeDoublePanel("Magazine HTK", settings.magazineHTK, specPanel),
-				new ThreeDoublePanel("Engine HS", settings.engineSize, specPanel),
-				new ThreeDoublePanel("Number of engines", settings.numberOfEngines, specPanel),
-				new ThreeDoublePanel("Engine power mod", settings.enginePowerMod, specPanel),
-				new ThreeDoublePanel("Fuel reserves (kL)", settings.fuelReserves, specPanel),
-				new CheckBoxPanel("Commercial ships allowed", settings.commercial, reqsPanel),
-				new TwoValuePanel("Velocity (km/s)", settings.velocity, reqsPanel, 0, 9999999),
-				new TwoValuePanel("Distance (billion km)", settings.distance, reqsPanel, 0, 9999999),
-				new TwoValuePanel("Magazine capacity", settings.ammoCapacity, reqsPanel, 0, 8000),
-				new TwoValuePanel("Mass (HS)", settings.mass, reqsPanel, 1, 1000),
-				new TwoValuePanel("Build time (years)", settings.buildTime, reqsPanel, 0, 1),
-				new TwoValuePanel("Annual Failure Rate", settings.annualFailureRate, reqsPanel, 0, 5)
-		};
+
 		refreshButton = new JButton("Refresh");
 		generateButton = new JButton("Generate ships!");
-		shipsGeneratedLabel = new JLabel("0 generated");
+		shipsGeneratedLabel = new JLabel("0 generated, 0 displayed");
 		refreshButton.addActionListener(this);
 		generateButton.addActionListener(this);
-		JPanel littleButtonPanel = new JPanel();
+		littleButtonPanel = new JPanel();
 		littleButtonPanel.add(refreshButton);
 		littleButtonPanel.add(generateButton);
 		littleButtonPanel.add(shipsGeneratedLabel);
+		littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 		megaPanel.add(littleButtonPanel);
 		this.add(megaPanel);
 		this.pack();
@@ -144,34 +97,73 @@ public class AuroraTools extends JFrame implements ActionListener {
 		new AuroraTools();
 	}
 
+    private JPanel makeComponentPanel() {
+        JPanel componentPanel = new JPanel(new GridLayout(1,0));
+        activeComponentsScroll = new JScrollPane();
+        activeComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        makeActiveComponentsPanel();
+        JPanel availableComponentsPanel = new JPanel(new BorderLayout());
+        availableComponents = new JList<ShipComponent>(components);
+
+        addComponentButton = new JButton("Add component");
+        addComponentButton.addActionListener(this);
+        availableComponentsPanel.add(availableComponents);
+        availableComponentsPanel.add(addComponentButton, BorderLayout.PAGE_END);
+
+        JScrollPane availableComponentsScroll = new JScrollPane(availableComponentsPanel);
+        availableComponentsScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        JSplitPane availableComponentsSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, availableComponentsScroll, activeComponentsScroll);
+        componentPanel.add(availableComponentsSplitPane);
+        return componentPanel;
+    }
+
+    private void makeActiveComponentsPanel() {
+        activeComponentsPanel = new JPanel();
+		activeComponentsPanel.setLayout(new BoxLayout(activeComponentsPanel, BoxLayout.PAGE_AXIS));
+        activeComponentsScroll.getViewport().add(activeComponentsPanel);
+        for (ShipComponent component : activeComponentArrayList) {
+            activeComponentsPanel.add(component.getPanel());
+        }
+    }
+
 	public void actionPerformed(ActionEvent a) {
 		if (a.getSource() == generateButton) {
-			for (int i = 0; i < components.length; i++) {
-				components[i].save();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.save();
 			}
+            constraints.save();
 			System.out.println("GENERATING SHIPS");
 			shipsDisplayed = 0;
 			shipsGenerated = 0;
-			shipsToDisplay = new Ship[MAX_SHIPS_DISPLAYED];
+			shipsToDisplay = new String[MAX_SHIPS_DISPLAYED];
 			displayThisShip = 0;
-			generateASetting(0);
+            generate();
 			updateDisplayShipField();
 			System.out.println("SHIPS GENERATED");
-			for (int i = 0; i < components.length; i++) {
-				components[i].updateText();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.updateText();
 			}
-			shipsGeneratedLabel.setText(shipsGenerated+" generated");
+			shipsGeneratedLabel.setText(shipsGenerated+" generated, "+shipsDisplayed+" displayed");
+			littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 		} else if (a.getSource() == refreshButton) {
-			for (int i = 0; i < components.length; i++) {
-				components[i].save();
+			for (ShipComponent component : activeComponentArrayList) {
+				component.save();
 			}
-			int numOfShips = 1;
-			for (int i = 0; i < settings.listOfSettings.length; i++) {
-				numOfShips *= settings.listOfSettings[i].getNumber();
-			}
+            constraints.save();
+			long numOfShips = 1;
+			for (ShipComponent component : activeComponentArrayList) {
+                numOfShips *= component.getTimes();
+            }
 			generateButton.setText("Generate " + numOfShips + " ships!");
+			littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 			megaPanel.updateUI();
-		} else if (a.getSource() == dispForwardButton) {
+		} else if (a.getSource() == addComponentButton) {
+            activeComponentArrayList.add(components[availableComponents.getSelectedIndex()].makeNew());
+            makeActiveComponentsPanel();
+            activeComponentsScroll.repaint();
+            activeComponentsScroll.revalidate();
+        } else if (a.getSource() == dispForwardButton) {
 			displayThisShip++;
 			updateDisplayShipField();
 		} else if (a.getSource() == dispBackwardButton) {
@@ -179,7 +171,7 @@ public class AuroraTools extends JFrame implements ActionListener {
 			updateDisplayShipField();
 		}
 	}
-	
+
 	public void updateDisplayShipField() {
 		if (shipsToDisplay[displayThisShip] == null) {
 			displayShipField.setText("Ship does not exist");
@@ -189,160 +181,45 @@ public class AuroraTools extends JFrame implements ActionListener {
 		dispLabel.setText("Displaying ship #"+displayThisShip);
 		megaPanel.updateUI();
 	}
-	
-	/**
-	 * Changes one Settings value, and generates ships. Only generates ships up to MAX_SHIPS_DISPLAYED. Recursive function.
-	 * @param settingsNumber
-	 */
-	public void generateASetting(int settingsNumber) {
-		//change the settings value settings.listOfSettings[i].number times.
-		for (int j = 0; j < settings.listOfSettings[settingsNumber].getNumber(); j++) {
-			settings.listOfSettings[settingsNumber].advanceTo(j);
-			if (settingsNumber < settings.listOfSettings.length-1) {
-				generateASetting(settingsNumber+1);
+
+    public void generate() {
+        ArrayList<VariableSetting> parameterArrayList = new ArrayList<VariableSetting>();
+        for (ShipComponent component : activeComponentArrayList) {
+            for (VariableSetting parameter : component.getParameters()) {
+                parameterArrayList.add(parameter);
+            }
+        }
+        generateASetting(parameterArrayList,0);
+    }
+
+	public void generateASetting(ArrayList<VariableSetting> parameterArrayList, int settingsNumber) {
+		for (int j = 0; j < parameterArrayList.get(settingsNumber).getTimes(); j++) {
+            parameterArrayList.get(settingsNumber).advance();
+			if (settingsNumber < parameterArrayList.size()-1) {
+				generateASetting(parameterArrayList,settingsNumber+1);
 			} else {
 				if (shipsDisplayed >= MAX_SHIPS_DISPLAYED) {
 					break;
 				} else {
-					generateShip();
+                    generateShip();
 				}
 			}
 		}
+        parameterArrayList.get(settingsNumber).reset();
 	}
 	
 	/**
 	 * Generates an individual ship based off of Settings specifications. Adds the ship if it qualifies, otherwise ignores it.
 	 */
-	public void generateShip() {
+    public void generateShip() {
 		Ship ship = new Ship();
-		shipsGenerated++;
-		if (ship.mass<settings.mass[0]||ship.mass>settings.mass[1]) return;
-		if (ship.distance<settings.distance[0]||ship.distance>settings.distance[1]) return;
-		if (ship.magazineCapacity<settings.ammoCapacity[0]||ship.magazineCapacity>settings.ammoCapacity[1]) return;
-		if (ship.velocity<settings.velocity[0]||ship.velocity>settings.velocity[1]) return;
-		if (ship.buildTime<settings.buildTime[0]||ship.buildTime>settings.buildTime[1]) return;
-		if (ship.annualFailureRate<settings.annualFailureRate[0]||ship.annualFailureRate>settings.annualFailureRate[1]) return;
-		if (ship.commercial && !settings.commercial[0]) return;
-		shipsToDisplay[shipsDisplayed] = ship;
+        for (ShipComponent component : activeComponentArrayList) {
+            component.updateShip(ship);
+        }
+        shipsGenerated++;
+        if (!ship.calculate(constraints)) return;
+
+		shipsToDisplay[shipsDisplayed] = ship.toString();
 		shipsDisplayed++;
-		
-		//record data for number of possible ships within certain parameters
-		//useful for removing excess calculations that don't actually result in ships
-		for (int i = 0; i < settings.listOfSettings.length; i++) {
-			settings.listOfSettings[i].values[settings.listOfSettings[i].count]++;
-		}
-	}
-	
-	private class SpecialPanel extends JPanel {
-		public JLabel label;
-		public SpecialPanel(String title) {
-			this.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			label = new JLabel(title);
-		}
-		public void save() {}
-		public void updateText() {}
-	}
-	
-	private class OneStringPanel extends SpecialPanel {
-		public JTextField value = new JTextField(10);
-		public String[] set;
-		
-		public OneStringPanel(String title, String[] set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(value);
-			panel.add(this);
-		}
-		
-		public void save() {
-			set[0] = value.getText();
-		}
-	}
-	
-	private class TwoValuePanel extends SpecialPanel {
-		public JTextField min = new JTextField(8);
-		public JTextField max = new JTextField(8);
-		public double[] set;
-
-		public TwoValuePanel(String title, double[] set, JPanel panel, double minV, double maxV) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(min);
-			min.setText(minV+"");
-			this.add(max);
-			max.setText(maxV+"");
-			panel.add(this);
-
-		}
-		
-		public void save() {
-			set[0] = Double.parseDouble(min.getText());
-			set[1] = Double.parseDouble(max.getText());
-		}
-	}
-	
-	private class CheckBoxPanel extends SpecialPanel {
-		public JCheckBox val = new JCheckBox();
-		public boolean[] set;
-
-		public CheckBoxPanel(String title, boolean[] set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(val);
-			panel.add(this);
-		}
-		
-		public void save() {
-			set[0] = val.isSelected();
-		}
-	}
-	
-	private class ThreeDoublePanel extends SpecialPanel {
-		public JTextField min = new JTextField(3);
-		public JTextField max = new JTextField(3);
-		public JTextField spacing = new JTextField(3);
-		public VariableSetting set;
-		public JLabel runs = new JLabel("0x");
-		
-		public ThreeDoublePanel(String title, VariableSetting set, JPanel panel) {
-			super(title);
-			this.set = set;
-			this.add(label);
-			this.add(min);
-			min.setText(set.getMin()+"");
-			this.add(max);
-			max.setText(set.getMax()+"");
-			this.add(spacing);
-			spacing.setText(set.getSpacing()+"");
-			runs.setPreferredSize(new Dimension(40,runs.getPreferredSize().height));
-			this.add(runs);
-			
-			setToolTipText("No runs generated yet.");
-			
-			panel.add(this);
-		}
-		
-		public void save() {
-			set.setAll(Double.parseDouble(min.getText()), Double.parseDouble(max.getText()), Double.parseDouble(spacing.getText()));
-			runs.setText((int)set.getNumber()+"x");
-			updateText();
-		}
-		
-		public void updateText() {
-			DecimalFormat df = new DecimalFormat("#.###");
-			String tooltiptext = "<html><style>td {border:1px solid black;}</style><table cellspacing=\"0\"><tr>";
-			for (int i = 0; i < set.getNumber(); i++) {
-				tooltiptext += "<td>" + df.format(set.getValueAt(i)) + "</td>";
-			}
-			tooltiptext += "</tr><tr>";
-			for (int i = 0; i < set.getNumber(); i++) {
-				tooltiptext += "<td>" + set.values[i] + "</td>";
-			}
-			tooltiptext += "</tr></table></html>";
-			setToolTipText(tooltiptext);
-		}
 	}
 }

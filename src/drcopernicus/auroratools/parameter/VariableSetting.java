@@ -1,40 +1,51 @@
 package drcopernicus.auroratools.parameter;
 
-public class VariableSetting {
-	protected double min;
-	protected double max;
-	protected double spacing;
-	public double current;
-	protected int number;
-	public int count;
-	
-	public int[] values;
-	
-	public void setAll(double min, double max, double spacing) {
-		
-	}
-	
-	public double getMin() {
-		return min;
-	}
+import javax.swing.*;
 
-	public double getMax() {
-		return max;
-	}
+public abstract class VariableSetting {
+    protected String name;
+    protected int current;
+    protected int min;
+    protected int max;
 
-	public double getSpacing() {
-		return spacing;
-	}
-	
-	public double getNumber() {
-		return number;
-	}
-	
-	public void advanceTo(int i) {
-		
-	}
+    protected JPanel jPanel;
+    protected JLabel nameLabel;
 
-	public double getValueAt(int i) {
-		return -1;
-	}
+    protected VariableSetting(String name, int max) {
+        this.name = name;
+        min = 0;
+        this.max = max;
+        current = current;
+    }
+
+    public abstract void save();
+
+    public void updateText() {
+        nameLabel.setText(name+" ("+getTimes()+"x)");
+    }
+
+    /**
+     * Number of choices
+     * @return
+     */
+    public int getTimes() {
+        return max-min+1;
+    }
+
+    public abstract double getValue();
+
+    public abstract double getMin();
+
+    public abstract double getMax();
+
+    public void reset() {
+        current = min-1;
+    }
+
+    public void advance() {
+        if (current >= max) return;
+        current++;
+    }
+
+    public abstract JPanel getPanel();
 }
