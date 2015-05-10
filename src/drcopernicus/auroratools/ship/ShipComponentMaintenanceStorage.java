@@ -1,6 +1,5 @@
 package drcopernicus.auroratools.ship;
 
-import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.VariableSetting;
 
 public class ShipComponentMaintenanceStorage extends ShipComponent {

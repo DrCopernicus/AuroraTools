@@ -1,6 +1,5 @@
 package drcopernicus.auroratools.ship;
 
-import com.sun.org.apache.xpath.internal.operations.Variable;
 import drcopernicus.auroratools.parameter.Parameter;
 import drcopernicus.auroratools.parameter.ParameterBuilder;
 import drcopernicus.auroratools.parameter.ParameterWithDescriptions;
