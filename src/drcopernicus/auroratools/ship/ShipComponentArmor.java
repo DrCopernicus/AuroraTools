@@ -21,7 +21,7 @@ public class ShipComponentArmor extends ShipComponent {
 
     @Override
     public VariableSetting[] getParameters() {
-        return new VariableSetting[]{armorRating};
+        return new VariableSetting[]{armorRating, armorWeight};
     }
 
     @Override

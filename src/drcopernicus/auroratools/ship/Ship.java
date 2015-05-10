@@ -86,21 +86,31 @@ public class Ship {
     }
 
     private boolean calculateArmor() {
-        //this algorithm is accurate up to ~20 for small ships (800 HS), and only varies from the actual value for larger ships by less than 1 HS (in most cases)
-		double ar;
-		double sbar;
-		double asr = 0;
-		int tempArmorLevels = armorRating;
-		while (tempArmorLevels >= 0) {
-			ar = armorRating - tempArmorLevels + 1;
-			sbar = Math.round(mass+aHS*1.0461); //this constant seems to work well
-			asr = Math.pow(0.75*Math.sqrt(Math.PI)*sbar, 2.0/3.0); //not the true ASR as shown on the construction screen
-			aHS = Math.round((ar*asr/armorWeight)*10)/10.0;
-			tempArmorLevels--;
-		}
-		mass += aHS;
-		buildPoints += aHS * armorWeight;
-		armorWidth = asr;
+        boolean done;
+        double volume, area, strength, last, size = 0.0f;
+
+        for (int layer = 0; layer < armorRating; layer++) {
+            done = false;
+            last = -1;
+            volume = Math.ceil(mass + size);
+
+            while (!done) {
+                area = 4.0 * Math.PI * Math.pow((3.0 * volume) / (4.0 * Math.PI), 2.0/3.0);
+                area = Math.round(area * 10.0) / 10.0;
+                area *= layer + 1;
+                strength = area / 4.0;
+
+                size = Math.ceil((strength / (double)armorWeight * 10.0)) / 10.0f;
+                volume = Math.ceil(mass + size);
+
+                if (size == last)
+                    done = true;
+
+                last = size;
+            }
+        }
+
+        mass += size;
 
         return true;
     }
