@@ -7,6 +7,8 @@ import java.text.DecimalFormat;
 public class Ship {
     public double mass;             // HS
     public double buildPoints;
+    public double rawEP;
+    public double fuelUse;           // L/hr
 
     public int crew;
     public int deploymentTime;
@@ -17,22 +19,21 @@ public class Ship {
     public int fuelReserves;         // kL
     public int cargoCapacity;        // HS
     public int numberOfEngines;
+    public int fuelPerAnnum;         // kL per annum
 
     public boolean commercial;
 
     public String engineTitle;       // e.g. "Commercial Ion Drive"
 
-	public double magazineCapacity;
-	public double rawEP;
-	public double velocity;          // km/s
-	public double fuelUse;           // L/hr
-	public double distance;          // Tm (billion km)
-	public double daysOfFuel;        // days
-	public double mSP;
-	public double annualFailureRate;
-	public double buildTime;
-	public double armorWidth;
-	public double aHS;
+    private double magazineCapacity;
+    private double velocity;          // km/s
+    private double distance;          // Tm (billion km)
+    private double daysOfFuel;        // days
+    private double mSP;
+    private double annualFailureRate;
+    private double buildTime;
+    private double armorWidth;
+	private double aHS;
 
 	public Ship() {
         mass = 0;
@@ -166,6 +167,7 @@ public class Ship {
 		//MAGAZINE BAR
 		if (magazineCapacity > 0) r += "Magazine " + (int)magazineCapacity + "\n";
         if (cargoCapacity > 0) r += "Cargo Capacity " + cargoCapacity * 50 + "\n";
+        if (fuelPerAnnum > 0) r += "Fuel Harvester " + fuelPerAnnum + " kL per annum, 10% to full in " + (9*fuelReserves/10)/fuelPerAnnum + " years" + "\n";
 
 		r += "\n";
 
