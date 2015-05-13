@@ -21,7 +21,7 @@ public class Ship {
     public int numberOfEngines;
     public int fuelPerAnnum;         // kL per annum
 
-    public boolean commercial;
+    public boolean military;
 
     public String engineTitle;       // e.g. "Commercial Ion Drive"
 
@@ -51,7 +51,7 @@ public class Ship {
         geoSurveyPoints = 0;
         armorWidth = 0;
         aHS = 0;
-        commercial = false;
+        military = false;
 	}
 	
 	public boolean calculate(ShipConstraint shipConstraint) {
@@ -183,6 +183,9 @@ public class Ship {
 		//SENSOR STATS
 		if (gravSurveyPoints > 0) r += "Gravitational Survey Sensors\t" + gravSurveyPoints + " Survey Points Per Hour\n";
 		if (geoSurveyPoints > 0) r += "Geological Survey Sensors\t" + geoSurveyPoints + " Survey Points Per Hour\n";
+
+        //DESIGN CLASSIFICATION
+        r += "This design is classed as a " + (military ? "Military" : "Commercial") + " Vessel for maintenance purposes\n";
 
 		return r;
 	}

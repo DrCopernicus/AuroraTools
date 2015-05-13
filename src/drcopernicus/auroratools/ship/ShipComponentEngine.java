@@ -36,9 +36,9 @@ public class ShipComponentEngine extends ShipComponent {
         ship.crew += (int)(engineSize.getValue() * count.getValue() * powerMod.getValue());
         ship.mass += engineSize.getValue() * count.getValue();
         ship.buildPoints += (enginePower.getValue() * count.getValue() * engineSize.getValue())/2; //not accurate, needs thermal calculations
-        boolean commercial = (powerMod.getValue() <= 0.5 && engineSize.getValue() >= 25);
-        ship.commercial = (commercial || ship.commercial);
-        ship.engineTitle = (commercial ? "Commercial " : "Military ") + enginePower.getString() + " Engine";
+        boolean military = (powerMod.getValue() > 0.5 || engineSize.getValue() < 25);
+        ship.military = (military || ship.military);
+        ship.engineTitle = (military ? "Military " : "Commercial ") + enginePower.getString() + " Engine";
     }
 
     @Override
