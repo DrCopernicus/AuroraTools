@@ -32,6 +32,12 @@ public class Parameter extends VariableSetting {
         return choices[max].doubleValue();
     }
 
+    public int getMaxIterator() { return max; }
+
+    public int getMinIterator() { return min; }
+
+    public double getValueAt(int i) {return choices[i].doubleValue(); }
+
     public JPanel getPanel() {
         if (jPanel == null) {
             jPanel = new JPanel();

@@ -44,7 +44,8 @@ public class AuroraTools extends JFrame implements ActionListener {
 				new ShipComponentGeoSensor(),
                 new ShipComponentGravSensor(),
                 new ShipComponentSoriumHarvester(),
-                new ShipComponentThermalSensor()
+                new ShipComponentThermalSensor(),
+                new SmartComponentFuelStorage()
         };
 
         constraints = new ShipConstraint();
