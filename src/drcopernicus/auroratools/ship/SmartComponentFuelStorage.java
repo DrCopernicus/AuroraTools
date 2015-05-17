@@ -35,14 +35,12 @@ public class SmartComponentFuelStorage extends ShipComponent {
                 return;
         }
         if (leftover > 0) {
-            System.out.println("leftover");
             addMaximumOfSize(ship, (int) size.getMin(), (int)Math.max(leftover/size.getMin(),1));
         }
     }
 
     //returns amount added
     private int addMaximumOfSize(Ship ship, int size, int count) {
-        System.out.println("added "+count+" size "+size);
         int added = count * size;
         ship.fuelReserves += added;
         ship.mass += count * size / 50.0;
