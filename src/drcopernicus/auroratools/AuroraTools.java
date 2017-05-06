@@ -36,23 +36,32 @@ public class AuroraTools extends JFrame implements ActionListener {
 	
 	public AuroraTools() {
         components = new ShipComponent[]{
+                new ShipComponentHeaderBar(" * COMMON"),
+                new ShipComponentPlaceholderComponent(),
                 new ShipComponentBridge(),
                 new ShipComponentCargoHold(),
                 new ShipComponentEngine(),
                 new ShipComponentEngineeringSpaces(),
                 new ShipComponentFuelStorage(),
+                new SmartComponentFuelStorage(),
+                new ShipComponentHeaderBar(" * SURVEY"),
 				new ShipComponentGeoSensor(),
                 new ShipComponentGravSensor(),
-                new ShipComponentSoriumHarvester(),
                 new ShipComponentThermalSensor(),
-                new SmartComponentFuelStorage()
+                new ShipComponentHeaderBar(" * MINING"),
+                new ShipComponentSoriumHarvester(),
+                new ShipComponentHeaderBar(" * CARRIER"),
+                new ShipComponentFlightCrew(),
+                new ShipComponentHangarDeck(),
+				new ShipComponentHeaderBar(" * ENERGY WEAPONS"),
+				new ShipComponentPowerPlant()
         };
 
         constraints = new ShipConstraint();
 
         activeComponentArrayList = new ArrayList<ShipComponent>();
         activeComponentArrayList.add(new ShipComponentArmor());
-        activeComponentArrayList.add(new ShipComponentCrewQuarters());
+        activeComponentArrayList.add(new ShipComponentDeploymentTime());
 
 		megaPanel = new JPanel();
 		megaPanel.setLayout(new BoxLayout(megaPanel,BoxLayout.PAGE_AXIS));
@@ -163,10 +172,14 @@ public class AuroraTools extends JFrame implements ActionListener {
 			littleButtonPanel.setMaximumSize(littleButtonPanel.getPreferredSize());
 			megaPanel.updateUI();
 		} else if (a.getSource() == addComponentButton) {
-            activeComponentArrayList.add(components[availableComponents.getSelectedIndex()].makeNew());
-            makeActiveComponentsPanel();
-            activeComponentsScroll.repaint();
-            activeComponentsScroll.revalidate();
+			ShipComponent comp = components[availableComponents.getSelectedIndex()].makeNew();
+			if (comp != null)
+            {
+                activeComponentArrayList.add(comp);
+                makeActiveComponentsPanel();
+                activeComponentsScroll.repaint();
+                activeComponentsScroll.revalidate();
+            }
         } else if (a.getSource() == dispForwardButton) {
 			displayThisShip++;
 			updateDisplayShipField();

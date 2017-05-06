@@ -9,7 +9,7 @@ public class ShipComponentBridge extends ShipComponent {
 
     public ShipComponentBridge() {
         super("Bridge");
-        count = ParameterBuilder.defaultCountParameter();
+        count = ParameterBuilder.countParameter(1, 1);
     }
 
     @Override

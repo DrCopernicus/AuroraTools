@@ -11,7 +11,8 @@ public class Ship {
     public double fuelUse;           // L/hr
 
     public int crew;
-    public int deploymentTime;
+    public double deploymentTime;
+
     public int gravSurveyPoints;
     public int geoSurveyPoints;
     public int armorRating;
@@ -29,11 +30,20 @@ public class Ship {
     private double velocity;          // km/s
     private double distance;          // Tm (billion km)
     private double daysOfFuel;        // days
-    private double mSP;
+    public double mSP;
     private double annualFailureRate;
     private double buildTime;
     private double armorWidth;
 	private double aHS;
+
+	public int hangarDeckCapacity;
+
+	public double powerRequirement;
+	public double powerGenerated;
+
+	public int numberOfEngineeringSpaces;
+
+	private double maintLife;
 
 	public Ship() {
         mass = 0;
@@ -51,6 +61,7 @@ public class Ship {
         geoSurveyPoints = 0;
         armorWidth = 0;
         aHS = 0;
+        hangarDeckCapacity = 0;
         military = false;
 	}
 	
@@ -75,13 +86,19 @@ public class Ship {
                 && calculateArmor()
                 && calculateEngine(shipConstraint)
                 && calculateMaintenance()
+                && calculatePower()
                 && otherConstraints(shipConstraint));
 	}
 
     private boolean calculateCrewQuarters() {
-        double reqCrewQuarters = Math.pow(deploymentTime,1/3)*crew/50.0;
-        mass += Math.round(reqCrewQuarters*10)/10.0;
-        buildPoints += Math.round(reqCrewQuarters*10);
+        if (deploymentTime < 0.5)
+            crew = (int)Math.ceil((double)crew / 2);
+        if (deploymentTime < 0.1)
+            crew = (int)Math.ceil((double)crew / 3);
+        double quarters = Math.ceil((Math.pow(deploymentTime,1/3)*crew)/0.04);
+
+        mass += quarters * 0.04;
+        buildPoints += quarters * 0.4;
 
         return true;
     }
@@ -131,22 +148,33 @@ public class Ship {
     }
 
     private boolean calculateMaintenance() {
-//		//MAINTENANCE ========================================================
-//		if (s.numberOfEngineerSpaces.current == 0) {
-//			annualFailureRate = mass/20.0;
-//		} else {
-//			//annual fail rate = mass/200 * 4/(100*percent of hull dedicated to engineering)
-//			//percent of hull dedicated to engineering = engineering spaces/mass
-//			annualFailureRate = mass * mass / (s.numberOfEngineerSpaces.current * 5000);
-//		}
-//		mSP = buildPoints * (s.numberOfEngineerSpaces.current/mass)/0.08 + 1000 * s.numberOfMaintStorage.current;
+        if (!military)
+            return true;
+
+		if (numberOfEngineeringSpaces == 0) {
+			annualFailureRate = mass/20.0;
+		} else {
+			//annual fail rate = mass/200 * 4/(100*percent of hull dedicated to engineering)
+			//percent of hull dedicated to engineering = engineering spaces/mass
+			annualFailureRate = mass * mass / (numberOfEngineeringSpaces * 5000);
+		}
+		mSP += buildPoints * (numberOfEngineeringSpaces/mass)/0.08;
+
+		//maintLife =
 
         return true;
     }
 
+    private boolean calculatePower()
+    {
+        return powerGenerated >= powerRequirement;
+    }
+
     private boolean otherConstraints(ShipConstraint sc) {
         return (insideRange(mass, sc.mass)
-                &&insideRange(cargoCapacity, sc.cargoCapacity));
+                &&insideRange(cargoCapacity, sc.cargoCapacity)
+                &&insideRange(hangarDeckCapacity, sc.hangarDeckCapacity)
+                &&insideRange(distance, sc.distance));
     }
 
     private boolean insideRange(double constrained, VariableSetting range) {
@@ -176,7 +204,7 @@ public class Ship {
         if (numberOfEngines != 0) {
             r += (int)(rawEP/(double)numberOfEngines) + "EP " + engineTitle + " (" + numberOfEngines + ")\tPower " + rawEP +"\n";
         }
-        r += fuelReserves + " kL" + (numberOfEngines != 0 ? " " + df.format(distance) + " Tm (" + (int)daysOfFuel + " days)\n" : "");
+        r += fuelReserves + " kL" + (numberOfEngines != 0 ? " " + df.format(distance) + " billion km (" + (int)daysOfFuel + " days)\n" : "");
 
 		r += "\n";
 

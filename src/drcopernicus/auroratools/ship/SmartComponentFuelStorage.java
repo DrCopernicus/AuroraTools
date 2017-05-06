@@ -11,8 +11,8 @@ public class SmartComponentFuelStorage extends ShipComponent {
 
     public SmartComponentFuelStorage() {
         super("Smart Fuel Storage");
-        fuelAmount = ParameterBuilder.defaultCountParameter();
-        size = new Parameter("Size",new Integer[]{5,10,50,250,1000,5000}) {
+        fuelAmount = ParameterBuilder.countParameter("Fuel (kton)", 0, 250);
+        size = new Parameter("Allowed Sizes",new Integer[]{5,10,50,250,1000,5000}) {
             public int getTimes() {
                 return 1;
             }
